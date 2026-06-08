@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="/run/mood/" />
+  <title>Mood Journal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--hub-font, system-ui, sans-serif);
+      font-size: var(--hub-font-size, 15px);
+      background: var(--hub-bg, #f9fafb);
+      color: var(--hub-text, #111827);
+      min-height: 100vh;
+    }
+
+    .app-header { padding: 16px 20px 0; }
+    .app-header h1 { font-size: 1.25rem; font-weight: 700; }
+    .app-header .subtitle { font-size: 0.85rem; color: var(--hub-text-muted, #6b7280); margin-top: 2px; }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 12px 20px 0;
+      border-bottom: 1px solid var(--hub-border, #e5e7eb);
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--hub-text-muted, #6b7280);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      font-family: inherit;
+      border-radius: var(--hub-radius, 6px) var(--hub-radius, 6px) 0 0;
+      transition: color .15s;
+    }
+    .tab-btn.active {
+      color: var(--hub-primary, #6366f1);
+      border-bottom-color: var(--hub-primary, #6366f1);
+      font-weight: 600;
+    }
+    .tab-btn:hover:not(.active) { color: var(--hub-text, #111827); }
+
+    .tab-panel { display: none; padding: 20px; max-width: 640px; }
+    .tab-panel.active { display: block; }
+
+    .card {
+      background: var(--hub-surface, #fff);
+      border: 1px solid var(--hub-border, #e5e7eb);
+      border-radius: var(--hub-radius, 8px);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .prompt {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .scale-row { display: flex; gap: 8px; margin-bottom: 4px; }
+    .scale-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 4px;
+      border: 1.5px solid var(--hub-border, #e5e7eb);
+      border-radius: var(--hub-radius, 8px);
+      background: var(--hub-bg, #f9fafb);
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color .12s, background .12s;
+    }
+    .scale-btn .emoji { font-size: 1.5rem; line-height: 1; }
+    .scale-btn .label { font-size: 0.68rem; color: var(--hub-text-muted, #6b7280); }
+    .scale-btn.selected {
+      border-color: var(--hub-primary, #6366f1);
+      background: color-mix(in srgb, var(--hub-primary, #6366f1) 10%, transparent);
+    }
+    .scale-btn.selected .label { color: var(--hub-primary, #6366f1); font-weight: 600; }
+
+    .field-label { font-size: 0.8rem; font-weight: 600; color: var(--hub-text-muted, #6b7280); margin: 16px 0 8px; text-transform: uppercase; letter-spacing: .03em; }
+
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip {
+      padding: 6px 12px;
+      border-radius: 99px;
+      border: 1px solid var(--hub-border, #e5e7eb);
+      background: var(--hub-bg, #f9fafb);
+      color: var(--hub-text-muted, #6b7280);
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .chip.selected {
+      border-color: var(--hub-primary, #6366f1);
+      background: var(--hub-primary, #6366f1);
+      color: var(--hub-primary-fg, #fff);
+    }
+
+    textarea {
+      width: 100%;
+      border: 1px solid var(--hub-border, #e5e7eb);
+      border-radius: var(--hub-radius, 8px);
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      resize: vertical;
+      min-height: 80px;
+      background: var(--hub-bg, #f9fafb);
+      color: var(--hub-text, #111827);
+    }
+    textarea:focus, .chip:focus, .scale-btn:focus { outline: 2px solid var(--hub-primary, #6366f1); outline-offset: 1px; }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: var(--hub-radius, 6px);
+      border: 1px solid var(--hub-border, #e5e7eb);
+      background: var(--hub-surface, #fff);
+      color: var(--hub-text, #111827);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--hub-primary, #6366f1);
+      border-color: var(--hub-primary, #6366f1);
+      color: var(--hub-primary-fg, #fff);
+    }
+    .btn-primary:hover { background: var(--hub-primary-hover, #4f46e5); }
+    .btn:disabled { opacity: 0.6; cursor: default; }
+    .btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+    .empty { color: var(--hub-text-muted, #6b7280); font-size: 0.88rem; padding: 24px 0; text-align: center; }
+
+    .entry-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--hub-border, #e5e7eb);
+      cursor: pointer;
+    }
+    .entry-row:last-child { border-bottom: none; }
+    .entry-emojis { font-size: 1.3rem; line-height: 1.2; white-space: nowrap; }
+    .entry-meta { flex: 1; min-width: 0; }
+    .entry-date { font-weight: 600; font-size: 0.9rem; }
+    .entry-tags { font-size: 0.78rem; color: var(--hub-text-muted, #6b7280); margin-top: 2px; }
+    .entry-note-preview { font-size: 0.82rem; color: var(--hub-text-muted, #6b7280); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .entry-detail { font-size: 0.88rem; line-height: 1.5; }
+    .entry-detail .row { margin-bottom: 8px; }
+    .entry-detail .label { font-weight: 600; color: var(--hub-text-muted, #6b7280); font-size: 0.75rem; text-transform: uppercase; letter-spacing: .03em; }
+
+    .window-row { display: flex; gap: 6px; margin-bottom: 16px; }
+    .window-btn {
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--hub-border, #e5e7eb);
+      background: var(--hub-bg, #f9fafb);
+      color: var(--hub-text-muted, #6b7280);
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .window-btn.active {
+      border-color: var(--hub-primary, #6366f1);
+      background: var(--hub-primary, #6366f1);
+      color: var(--hub-primary-fg, #fff);
+    }
+
+    .chart-wrap { overflow-x: auto; }
+    .chart-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+    .chart-summary { font-size: 0.78rem; color: var(--hub-text-muted, #6b7280); margin-bottom: 10px; }
+
+    .symptom-tally { display: flex; flex-direction: column; gap: 6px; }
+    .symptom-bar-row { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; }
+    .symptom-bar-label { width: 90px; flex-shrink: 0; color: var(--hub-text-muted, #6b7280); }
+    .symptom-bar-track { flex: 1; height: 8px; border-radius: 99px; background: var(--hub-bg, #f3f4f6); overflow: hidden; }
+    .symptom-bar-fill { height: 100%; background: var(--hub-primary, #6366f1); border-radius: 99px; }
+    .symptom-bar-count { width: 24px; text-align: right; color: var(--hub-text-muted, #6b7280); }
+
+    .member-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--hub-border, #e5e7eb);
+    }
+    .member-row:last-child { border-bottom: none; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.95rem; color: #fff; flex-shrink: 0;
+    }
+    .member-name { font-weight: 600; font-size: 0.92rem; flex: 1; }
+
+    .switch {
+      position: relative; width: 42px; height: 24px; flex-shrink: 0;
+      border-radius: 99px; background: var(--hub-border, #d1d5db);
+      border: none; cursor: pointer; transition: background .15s;
+    }
+    .switch.on { background: var(--hub-primary, #6366f1); }
+    .switch .knob {
+      position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+      border-radius: 50%; background: #fff; transition: left .15s;
+      box-shadow: 0 1px 2px rgba(0,0,0,.25);
+    }
+    .switch.on .knob { left: 20px; }
+
+    .hint { font-size: 0.8rem; color: var(--hub-text-muted, #6b7280); margin-bottom: 6px; }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.4);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; padding: 16px;
+    }
+    .modal {
+      background: var(--hub-surface, #fff);
+      border-radius: var(--hub-radius, 10px);
+      padding: 22px;
+      max-width: 480px;
+      width: 100%;
+      max-height: 86vh;
+      overflow-y: auto;
+    }
+    .modal h2 { font-size: 1.1rem; margin-bottom: 14px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="app-header">
+    <h1>🌤️ Mood Journal</h1>
+    <p class="subtitle">Private check-ins and trends — yours stay yours unless you choose to share</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="today" onclick="switchTab('today')">Today</button>
+    <button class="tab-btn" data-tab="history" onclick="switchTab('history')">History</button>
+    <button class="tab-btn" data-tab="trends" onclick="switchTab('trends')">Trends</button>
+    <button class="tab-btn" data-tab="sharing" onclick="switchTab('sharing')">Sharing</button>
+  </div>
+
+  <div class="tab-panel active" id="panel-today"></div>
+  <div class="tab-panel" id="panel-history"></div>
+  <div class="tab-panel" id="panel-trends"></div>
+  <div class="tab-panel" id="panel-sharing"></div>
+
+  <script type="module">
+    import { esc, memberColor, initial } from "/hub-sdk.js";
+    import {
+      MOOD_SCALE, ENERGY_SCALE, SYMPTOM_TAGS, scaleEntry,
+      promptForDate, canViewTrends, sharedWithMe,
+      localDateStr, formatEntryDate,
+      entriesInWindow, average, symptomFrequency,
+    } from "./logic.js";
+
+    const CONTEXT = window.__CONTEXT_URL ?? "";
+    const DB      = window.__DB_URL      ?? "";
+    const APP_ID  = window.__APP_ID      ?? "mood";
+    const ME      = window.__CURRENT_MEMBER ?? null;
+
+    async function db(sql, params = []) {
+      if (!DB) return { rows: [] };
+      const res = await fetch(DB, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sql, params }),
+      });
+      return res.json();
+    }
+
+    let members   = [];
+    let memberMap = new Map();
+    let entries   = [];   // current member's own entries, newest first
+    let shares    = [];   // all share rows touching the current member (as owner or viewer)
+
+    let activeTab = "today";
+    let trendWindow = 30;       // days
+    let sharedViewerId = null;  // member currently selected in "Shared with me"
+    let sharedEntriesCache = new Map(); // memberId -> entries
+    let modalEl = null;
+
+    const todayStr = localDateStr(new Date());
+
+    // ── Data loading ────────────────────────────────────────────────────────
+
+    async function loadMembers() {
+      if (!CONTEXT) {
+        members = [
+          { id: "demo-1", name: "Alex", role: "adult" },
+          { id: "demo-2", name: "Sam", role: "adult" },
+          { id: "demo-3", name: "Riley", role: "child" },
+        ];
+        memberMap = new Map(members.map(m => [m.id, m]));
+        return;
+      }
+      try {
+        const res = await fetch(`${CONTEXT}?keys=family.members`);
+        members = ((await res.json())["family.members"]) ?? [];
+      } catch { members = []; }
+      memberMap = new Map(members.map(m => [m.id, m]));
+    }
+
+    async function loadEntries() {
+      if (!ME) { entries = demoEntries(); return; }
+      const { rows } = await db(
+        `SELECT id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at
+           FROM entries WHERE member_id = ? ORDER BY entry_date DESC`,
+        [ME.id]
+      );
+      entries = rows ?? [];
+    }
+
+    async function loadShares() {
+      if (!ME) { shares = []; return; }
+      const { rows } = await db(
+        `SELECT id, owner_id, viewer_id FROM shares WHERE owner_id = ? OR viewer_id = ?`,
+        [ME.id, ME.id]
+      );
+      shares = rows ?? [];
+    }
+
+    async function loadSharedEntries(ownerId) {
+      if (sharedEntriesCache.has(ownerId)) return sharedEntriesCache.get(ownerId);
+      if (!ME || !canViewTrends(ownerId, ME.id, shares)) return [];
+      // Trend sharing exposes mood/energy/date only — never notes or symptoms.
+      const { rows } = await db(
+        `SELECT entry_date, mood, energy FROM entries WHERE member_id = ? ORDER BY entry_date ASC`,
+        [ownerId]
+      );
+      const list = rows ?? [];
+      sharedEntriesCache.set(ownerId, list);
+      return list;
+    }
+
+    function demoEntries() {
+      const out = [];
+      for (let i = 0; i < 14; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = localDateStr(d);
+        out.push({
+          id: `demo-${i}`,
+          member_id: "demo-1",
+          entry_date: dateStr,
+          mood: 2 + ((i * 7) % 4),
+          energy: 1 + ((i * 3) % 5),
+          symptoms: i % 3 === 0 ? '["Tired","Anxious"]' : '["Calm"]',
+          note: i === 0 ? "Felt good about the morning walk." : "",
+          prompt: promptForDate(dateStr),
+          created_at: dateStr, updated_at: dateStr,
+        });
+      }
+      return out;
+    }
+
+    // ── Activity / notifications (best-effort, never leak content) ─────────
+
+    async function logCheckin(dateStr) {
+      await fetch("/api/activity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "mood_checkin",
+          description: `${ME.name} completed today's check-in.`,
+          metadata: { deepLink: { appId: APP_ID, params: {} } },
+        }),
+      }).catch(() => {});
+    }
+
+    // ── Save / upsert today's entry ─────────────────────────────────────────
+
+    async function saveEntry({ date, mood, energy, symptoms, note, prompt, existing }) {
+      const now = new Date().toISOString();
+      const symptomsJson = JSON.stringify(symptoms);
+
+      if (existing) {
+        await db(
+          `UPDATE entries SET mood = ?, energy = ?, symptoms = ?, note = ?, updated_at = ?
+             WHERE id = ? AND member_id = ?`,
+          [mood, energy, symptomsJson, note, now, existing.id, ME.id]
+        );
+        const idx = entries.findIndex(e => e.id === existing.id);
+        if (idx !== -1) entries[idx] = { ...existing, mood, energy, symptoms: symptomsJson, note, updated_at: now };
+      } else {
+        const id = crypto.randomUUID();
+        await db(
+          `INSERT INTO entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [id, ME.id, date, mood, energy, symptomsJson, note, prompt, now, now]
+        );
+        const created = { id, member_id: ME.id, entry_date: date, mood, energy, symptoms: symptomsJson, note, prompt, created_at: now, updated_at: now };
+        entries = [created, ...entries];
+      }
+
+      sharedEntriesCache.delete(ME.id);
+      renderToday();
+      if (activeTab === "history") renderHistory();
+      if (activeTab === "trends") renderTrends();
+
+      logCheckin(date).catch(() => {});
+    }
+
+    // ── Sharing actions ─────────────────────────────────────────────────────
+
+    async function setShare(viewerId, on) {
+      if (!ME) { alert("Sign in to manage sharing."); return; }
+      if (on) {
+        const id = crypto.randomUUID();
+        await db(`INSERT INTO shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, ?)`,
+          [id, ME.id, viewerId, new Date().toISOString()]);
+        shares = [...shares, { id, owner_id: ME.id, viewer_id: viewerId }];
+      } else {
+        await db(`DELETE FROM shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
+        shares = shares.filter(s => !(s.owner_id === ME.id && s.viewer_id === viewerId));
+      }
+      renderSharing();
+    }
+
+    // ── Tabs ─────────────────────────────────────────────────────────────────
+
+    window.switchTab = function (tab) {
+      activeTab = tab;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `panel-${tab}`));
+      if (tab === "today")   renderToday();
+      if (tab === "history") renderHistory();
+      if (tab === "trends")  renderTrends();
+      if (tab === "sharing") renderSharing();
+    };
+
+    // ── Today ────────────────────────────────────────────────────────────────
+
+    let draft = { mood: null, energy: null, symptoms: [], note: "" };
+
+    function todaysEntry() {
+      return entries.find(e => e.entry_date === todayStr) ?? null;
+    }
+
+    function renderToday() {
+      const panel = document.getElementById("panel-today");
+      const existing = todaysEntry();
+      const prompt = existing?.prompt || promptForDate(todayStr);
+
+      if (existing && !panel.dataset.editing) {
+        const moodInfo   = scaleEntry(MOOD_SCALE, existing.mood);
+        const energyInfo = scaleEntry(ENERGY_SCALE, existing.energy);
+        let tags = [];
+        try { tags = JSON.parse(existing.symptoms || "[]"); } catch {}
+
+        panel.innerHTML = `
+          <div class="card">
+            <p class="prompt">${esc(prompt)}</p>
+            <div class="entry-detail">
+              <div class="row"><span class="label">Mood</span><br>${moodInfo?.emoji ?? ""} ${esc(moodInfo?.label ?? "")}</div>
+              <div class="row"><span class="label">Energy</span><br>${energyInfo?.emoji ?? ""} ${esc(energyInfo?.label ?? "")}</div>
+              ${tags.length ? `<div class="row"><span class="label">Feeling</span><br>${tags.map(esc).join(", ")}</div>` : ""}
+              ${existing.note ? `<div class="row"><span class="label">Note</span><br>${esc(existing.note)}</div>` : ""}
+            </div>
+            <div class="btn-row">
+              <button class="btn" onclick="editToday()">Edit today's check-in</button>
+            </div>
+          </div>
+          <p class="hint">You've already checked in today. Come back tomorrow for a new prompt — or edit what you wrote.</p>
+        `;
+        return;
+      }
+
+      draft = existing
+        ? { mood: existing.mood, energy: existing.energy, symptoms: safeTags(existing.symptoms), note: existing.note }
+        : { mood: null, energy: null, symptoms: [], note: draft.note ?? "" };
+
+      panel.innerHTML = `
+        <div class="card">
+          <p class="prompt">${esc(prompt)}</p>
+
+          <div class="field-label">How's your mood?</div>
+          <div class="scale-row" id="mood-row"></div>
+
+          <div class="field-label">How's your energy?</div>
+          <div class="scale-row" id="energy-row"></div>
+
+          <div class="field-label">Anything you're feeling? (optional)</div>
+          <div class="chip-row" id="symptom-row"></div>
+
+          <div class="field-label">Want to write more? (optional, private)</div>
+          <textarea id="note-input" placeholder="Whatever's on your mind…">${esc(draft.note)}</textarea>
+
+          <div class="btn-row">
+            ${existing ? `<button class="btn" onclick="cancelEdit()">Cancel</button>` : ""}
+            <button class="btn btn-primary" id="save-btn" onclick="submitToday(${existing ? `'${existing.id}'` : "null"})">${existing ? "Save changes" : "Save check-in"}</button>
+          </div>
+        </div>
+      `;
+
+      renderScaleRow("mood-row", MOOD_SCALE, draft.mood, v => { draft.mood = v; renderToday(); });
+      renderScaleRow("energy-row", ENERGY_SCALE, draft.energy, v => { draft.energy = v; renderToday(); });
+      renderChipRow("symptom-row", SYMPTOM_TAGS, draft.symptoms, tag => {
+        draft.symptoms = draft.symptoms.includes(tag) ? draft.symptoms.filter(t => t !== tag) : [...draft.symptoms, tag];
+        renderToday();
+      });
+
+      const noteInput = document.getElementById("note-input");
+      noteInput?.addEventListener("input", () => { draft.note = noteInput.value; });
+    }
+
+    function safeTags(json) {
+      try { const arr = JSON.parse(json || "[]"); return Array.isArray(arr) ? arr : []; } catch { return []; }
+    }
+
+    function renderScaleRow(containerId, scale, selected, onPick) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      el.innerHTML = scale.map(s => `
+        <button type="button" class="scale-btn ${selected === s.value ? "selected" : ""}" data-value="${s.value}">
+          <span class="emoji">${s.emoji}</span>
+          <span class="label">${esc(s.label)}</span>
+        </button>
+      `).join("");
+      el.querySelectorAll(".scale-btn").forEach(btn => {
+        btn.addEventListener("click", () => onPick(Number(btn.dataset.value)));
+      });
+    }
+
+    function renderChipRow(containerId, tags, selected, onToggle) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      el.innerHTML = tags.map(tag => `
+        <button type="button" class="chip ${selected.includes(tag) ? "selected" : ""}" data-tag="${esc(tag)}">${esc(tag)}</button>
+      `).join("");
+      el.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => onToggle(btn.dataset.tag));
+      });
+    }
+
+    window.editToday = function () {
+      document.getElementById("panel-today").dataset.editing = "1";
+      renderToday();
+    };
+    window.cancelEdit = function () {
+      delete document.getElementById("panel-today").dataset.editing;
+      renderToday();
+    };
+
+    window.submitToday = async function (existingId) {
+      if (!ME) { alert("Sign in to save a check-in."); return; }
+      if (draft.mood == null || draft.energy == null) {
+        alert("Pick a mood and energy level to save your check-in.");
+        return;
+      }
+      const btn = document.getElementById("save-btn");
+      if (btn) { btn.disabled = true; btn.textContent = "Saving…"; }
+
+      const existing = existingId ? entries.find(e => e.id === existingId) : null;
+      try {
+        await saveEntry({
+          date: todayStr,
+          mood: draft.mood,
+          energy: draft.energy,
+          symptoms: draft.symptoms,
+          note: draft.note.trim(),
+          prompt: existing?.prompt || promptForDate(todayStr),
+          existing,
+        });
+        delete document.getElementById("panel-today").dataset.editing;
+      } catch (e) {
+        if (btn) { btn.disabled = false; btn.textContent = existing ? "Save changes" : "Save check-in"; }
+      }
+    };
+
+    // ── History ──────────────────────────────────────────────────────────────
+
+    function renderHistory() {
+      const panel = document.getElementById("panel-history");
+      if (!entries.length) {
+        panel.innerHTML = `<div class="empty">No check-ins yet — your first entry will show up here.</div>`;
+        return;
+      }
+      panel.innerHTML = `<div class="card">${entries.map(rowHtml).join("")}</div>`;
+      panel.querySelectorAll(".entry-row").forEach(row => {
+        row.addEventListener("click", () => openEntryDetail(row.dataset.id));
+      });
+
+      function rowHtml(e) {
+        const moodInfo = scaleEntry(MOOD_SCALE, e.mood);
+        const energyInfo = scaleEntry(ENERGY_SCALE, e.energy);
+        const tags = safeTags(e.symptoms);
+        return `
+          <div class="entry-row" data-id="${e.id}">
+            <div class="entry-emojis">${moodInfo?.emoji ?? ""}${energyInfo?.emoji ?? ""}</div>
+            <div class="entry-meta">
+              <div class="entry-date">${esc(formatEntryDate(e.entry_date))}${e.entry_date === todayStr ? " · Today" : ""}</div>
+              ${tags.length ? `<div class="entry-tags">${tags.map(esc).join(" · ")}</div>` : ""}
+              ${e.note ? `<div class="entry-note-preview">${esc(e.note)}</div>` : ""}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function openEntryDetail(id) {
+      const e = entries.find(x => x.id === id);
+      if (!e) return;
+      const moodInfo = scaleEntry(MOOD_SCALE, e.mood);
+      const energyInfo = scaleEntry(ENERGY_SCALE, e.energy);
+      const tags = safeTags(e.symptoms);
+      openModal(`
+        <h2>${esc(formatEntryDate(e.entry_date))}</h2>
+        ${e.prompt ? `<p class="hint" style="margin-bottom:14px;font-style:italic">"${esc(e.prompt)}"</p>` : ""}
+        <div class="entry-detail">
+          <div class="row"><span class="label">Mood</span><br>${moodInfo?.emoji ?? ""} ${esc(moodInfo?.label ?? "")}</div>
+          <div class="row"><span class="label">Energy</span><br>${energyInfo?.emoji ?? ""} ${esc(energyInfo?.label ?? "")}</div>
+          ${tags.length ? `<div class="row"><span class="label">Feeling</span><br>${tags.map(esc).join(", ")}</div>` : ""}
+          ${e.note ? `<div class="row"><span class="label">Note</span><br>${esc(e.note)}</div>` : ""}
+        </div>
+        <div class="modal-actions">
+          <button class="btn" onclick="closeModal()">Close</button>
+        </div>
+      `);
+    }
+
+    // ── Trends ───────────────────────────────────────────────────────────────
+
+    window.setTrendWindow = function (days) {
+      trendWindow = days;
+      renderTrends();
+    };
+
+    window.selectSharedViewer = function (memberId) {
+      sharedViewerId = memberId || null;
+      renderTrends();
+    };
+
+    async function renderTrends() {
+      const panel = document.getElementById("panel-trends");
+      const owners = sharedWithMe(ME?.id ?? "", shares);
+
+      panel.innerHTML = `
+        <div class="card">
+          <div class="window-row">
+            <button class="window-btn ${trendWindow === 7 ? "active" : ""}" onclick="setTrendWindow(7)">7 days</button>
+            <button class="window-btn ${trendWindow === 30 ? "active" : ""}" onclick="setTrendWindow(30)">30 days</button>
+            <button class="window-btn ${trendWindow === 90 ? "active" : ""}" onclick="setTrendWindow(90)">90 days</button>
+          </div>
+          <div id="my-trend-body"></div>
+        </div>
+        ${owners.length ? `
+          <div class="card">
+            <div class="field-label" style="margin-top:0">Shared with me</div>
+            <div class="chip-row" id="shared-picker" style="margin-bottom:14px"></div>
+            <div id="shared-trend-body"></div>
+          </div>
+        ` : ""}
+      `;
+
+      renderTrendBody("my-trend-body", entries, "Your trends");
+
+      if (owners.length) {
+        const picker = document.getElementById("shared-picker");
+        if (!sharedViewerId || !owners.includes(sharedViewerId)) sharedViewerId = owners[0];
+        picker.innerHTML = owners.map(id => `
+          <button type="button" class="chip ${sharedViewerId === id ? "selected" : ""}" data-id="${esc(id)}">${esc(memberMap.get(id)?.name ?? "Member")}</button>
+        `).join("");
+        picker.querySelectorAll(".chip").forEach(btn => {
+          btn.addEventListener("click", () => window.selectSharedViewer(btn.dataset.id));
+        });
+
+        const sharedEntries = await loadSharedEntries(sharedViewerId);
+        const name = memberMap.get(sharedViewerId)?.name ?? "This member";
+        renderTrendBody("shared-trend-body", sharedEntries, `${name}'s trends`, true);
+      }
+    }
+
+    function renderTrendBody(containerId, entryList, title, sharedView = false) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      const windowed = entriesInWindow(entryList, trendWindow);
+
+      if (!windowed.length) {
+        el.innerHTML = `<div class="empty">${sharedView ? "No shared check-ins yet for this window." : "No check-ins yet in this window — your trends will appear once you start logging."}</div>`;
+        return;
+      }
+
+      const moodAvg = average(windowed, "mood");
+      const energyAvg = average(windowed, "energy");
+
+      el.innerHTML = `
+        <div class="chart-title">${esc(title)} — last ${trendWindow} days</div>
+        <p class="chart-summary">${windowed.length} check-in${windowed.length === 1 ? "" : "s"} · avg mood ${moodAvg ?? "—"} / 5 · avg energy ${energyAvg ?? "—"} / 5</p>
+        <div class="chart-wrap">${trendChartSvg(windowed, "mood", "#6366f1", "Mood")}</div>
+        <div class="chart-wrap" style="margin-top:10px">${trendChartSvg(windowed, "energy", "#f59e0b", "Energy")}</div>
+        ${!sharedView ? symptomTallyHtml(windowed) : ""}
+      `;
+    }
+
+    function symptomTallyHtml(windowed) {
+      const tally = symptomFrequency(windowed);
+      if (!tally.length) return "";
+      const max = tally[0].count;
+      return `
+        <div class="field-label">What came up most</div>
+        <div class="symptom-tally">
+          ${tally.slice(0, 8).map(t => `
+            <div class="symptom-bar-row">
+              <div class="symptom-bar-label">${esc(t.tag)}</div>
+              <div class="symptom-bar-track"><div class="symptom-bar-fill" style="width:${Math.round((t.count / max) * 100)}%"></div></div>
+              <div class="symptom-bar-count">${t.count}</div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function trendChartSvg(points, field, color, label) {
+      const W = 560, H = 130, pL = 28, pR = 12, pT = 14, pB = 22;
+      const cW = W - pL - pR, cH = H - pT - pB;
+      const minV = 1, maxV = 5;
+      const n = points.length;
+
+      const px = i => n === 1 ? pL + cW / 2 : pL + (i / (n - 1)) * cW;
+      const py = v => pT + cH - ((v - minV) / (maxV - minV)) * cH;
+
+      const svg = [`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;display:block" role="img" aria-label="${esc(label)} trend chart">`];
+
+      for (let v = minV; v <= maxV; v++) {
+        const y = py(v).toFixed(1);
+        svg.push(`<line x1="${pL}" y1="${y}" x2="${W - pR}" y2="${y}" stroke="var(--hub-border, #e5e7eb)" stroke-width="1"/>`);
+        svg.push(`<text x="${pL - 6}" y="${+y + 3}" text-anchor="end" font-size="9" fill="var(--hub-text-muted, #9ca3af)">${v}</text>`);
+      }
+
+      const path = points.map((p, i) => `${i === 0 ? "M" : "L"} ${px(i).toFixed(1)} ${py(p[field]).toFixed(1)}`).join(" ");
+      svg.push(`<path d="${path}" fill="none" stroke="${color}" stroke-width="2"/>`);
+      points.forEach((p, i) => {
+        svg.push(`<circle cx="${px(i).toFixed(1)}" cy="${py(p[field]).toFixed(1)}" r="3" fill="${color}"/>`);
+      });
+
+      const firstLbl = formatEntryDate(points[0].entry_date);
+      const lastLbl = formatEntryDate(points[n - 1].entry_date);
+      svg.push(`<text x="${pL}" y="${H - 6}" font-size="9" fill="var(--hub-text-muted, #9ca3af)">${esc(firstLbl)}</text>`);
+      if (n > 1) svg.push(`<text x="${W - pR}" y="${H - 6}" text-anchor="end" font-size="9" fill="var(--hub-text-muted, #9ca3af)">${esc(lastLbl)}</text>`);
+
+      svg.push(`</svg>`);
+      return `<div style="font-size:0.75rem;color:var(--hub-text-muted, #6b7280);margin-bottom:2px">${esc(label)}</div>` + svg.join("");
+    }
+
+    // ── Sharing ──────────────────────────────────────────────────────────────
+
+    function renderSharing() {
+      const panel = document.getElementById("panel-sharing");
+      const others = members.filter(m => m.id !== ME?.id);
+
+      if (!others.length) {
+        panel.innerHTML = `<div class="empty">No other family members to share with yet.</div>`;
+        return;
+      }
+
+      const sharedSet = new Set(shares.filter(s => s.owner_id === (ME?.id ?? "")).map(s => s.viewer_id));
+
+      panel.innerHTML = `
+        <div class="card">
+          <div class="field-label" style="margin-top:0">Share your trends</div>
+          <p class="hint">Turn this on to let someone see your mood and energy trends over time. Your notes and tags always stay private — only the numbers are shared.</p>
+          ${others.map(m => `
+            <div class="member-row">
+              <div class="avatar" style="background:${memberColor(m.id, members)}">${esc(initial(m.name))}</div>
+              <div class="member-name">${esc(m.name)}</div>
+              <button type="button" class="switch ${sharedSet.has(m.id) ? "on" : ""}" data-id="${esc(m.id)}" aria-label="Share trends with ${esc(m.name)}">
+                <span class="knob"></span>
+              </button>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      panel.querySelectorAll(".switch").forEach(sw => {
+        sw.addEventListener("click", async () => {
+          const id = sw.dataset.id;
+          const turningOn = !sw.classList.contains("on");
+          sw.disabled = true;
+          try {
+            await setShare(id, turningOn);
+          } finally {
+            sw.disabled = false;
+          }
+        });
+      });
+    }
+
+    // ── Modal ────────────────────────────────────────────────────────────────
+
+    function openModal(html) {
+      closeModal();
+      modalEl = document.createElement("div");
+      modalEl.className = "modal-backdrop";
+      modalEl.innerHTML = `<div class="modal">${html}</div>`;
+      modalEl.addEventListener("click", e => { if (e.target === modalEl) closeModal(); });
+      document.body.appendChild(modalEl);
+    }
+    window.closeModal = function () { modalEl?.remove(); modalEl = null; };
+
+    // ── Init ─────────────────────────────────────────────────────────────────
+
+    (async () => {
+      await Promise.all([loadMembers(), loadEntries(), loadShares()]);
+      renderToday();
+    })();
+  </script>
+</body>
+</html>

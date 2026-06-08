@@ -1,0 +1,24 @@
+{
+  "id": "mood",
+  "name": "Mood Journal",
+  "version": "1.0.0",
+  "description": "Daily private mood and energy check-ins with gentle prompts and trend views over time. Entries stay private by default; opt in to share trends with a parent or partner.",
+  "entrypoint": "index.html",
+  "runtime": "static",
+  "icon": "🌤️",
+  "category": "health",
+  "tags": ["wellness", "mood", "journal", "mental-health", "reflection"],
+  "storage": "db",
+  "data_access": {
+    "reads": ["family.members"],
+    "writes": []
+  },
+  "permissions": {
+    "default_audience": "everyone",
+    "requires_approval": false
+  },
+  "nav": { "label": "Mood" },
+  "resource_limits": {
+    "max_db_bytes": 52428800
+  }
+}
