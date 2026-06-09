@@ -290,6 +290,7 @@
     let sharedViewerId = null;  // member currently selected in "Shared with me"
     let sharedEntriesCache = new Map(); // memberId -> entries
     let modalEl = null;
+    let historyLimit = 30;
 
     const todayStr = localDateStr(new Date());
 
@@ -435,7 +436,7 @@
       document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
       document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === `panel-${tab}`));
       if (tab === "today")   renderToday();
-      if (tab === "history") renderHistory();
+      if (tab === "history") { historyLimit = 30; renderHistory(); }
       if (tab === "trends")  renderTrends();
       if (tab === "sharing") renderSharing();
     };
@@ -581,13 +582,23 @@
 
     // ── History ──────────────────────────────────────────────────────────────
 
+    window.loadMoreHistory = function() {
+      historyLimit += 30;
+      renderHistory();
+    };
+
     function renderHistory() {
       const panel = document.getElementById("panel-history");
       if (!entries.length) {
         panel.innerHTML = `<div class="empty">No check-ins yet — your first entry will show up here.</div>`;
         return;
       }
-      panel.innerHTML = `<div class="card">${entries.map(rowHtml).join("")}</div>`;
+      const visible = entries.slice(0, historyLimit);
+      const remaining = entries.length - historyLimit;
+      const loadMoreBtn = remaining > 0
+        ? `<button class="btn" style="width:100%;margin-top:10px" onclick="loadMoreHistory()">Load ${Math.min(remaining, 30)} more (${remaining} remaining)</button>`
+        : "";
+      panel.innerHTML = `<div class="card">${visible.map(rowHtml).join("")}</div>${loadMoreBtn}`;
       panel.querySelectorAll(".entry-row").forEach(row => {
         row.addEventListener("click", () => openEntryDetail(row.dataset.id));
       });
