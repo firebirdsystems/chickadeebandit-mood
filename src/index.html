@@ -317,7 +317,7 @@
       if (!ME) { entries = demoEntries(); return; }
       const { rows } = await db(
         `SELECT id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at
-           FROM entries WHERE member_id = ? ORDER BY entry_date DESC`,
+           FROM app_mood__entries WHERE member_id = ? ORDER BY entry_date DESC`,
         [ME.id]
       );
       entries = rows ?? [];
@@ -326,7 +326,7 @@
     async function loadShares() {
       if (!ME) { shares = []; return; }
       const { rows } = await db(
-        `SELECT id, owner_id, viewer_id FROM shares WHERE owner_id = ? OR viewer_id = ?`,
+        `SELECT id, owner_id, viewer_id FROM app_mood__shares WHERE owner_id = ? OR viewer_id = ?`,
         [ME.id, ME.id]
       );
       shares = rows ?? [];
@@ -337,7 +337,7 @@
       if (!ME || !canViewTrends(ownerId, ME.id, shares)) return [];
       // Trend sharing exposes mood/energy/date only — never notes or symptoms.
       const { rows } = await db(
-        `SELECT entry_date, mood, energy FROM entries WHERE member_id = ? ORDER BY entry_date ASC`,
+        `SELECT entry_date, mood, energy FROM app_mood__entries WHERE member_id = ? ORDER BY entry_date ASC`,
         [ownerId]
       );
       const list = rows ?? [];
@@ -388,7 +388,7 @@
 
       if (existing) {
         await db(
-          `UPDATE entries SET mood = ?, energy = ?, symptoms = ?, note = ?, updated_at = ?
+          `UPDATE app_mood__entries SET mood = ?, energy = ?, symptoms = ?, note = ?, updated_at = ?
              WHERE id = ? AND member_id = ?`,
           [mood, energy, symptomsJson, note, now, existing.id, ME.id]
         );
@@ -397,7 +397,7 @@
       } else {
         const id = crypto.randomUUID();
         await db(
-          `INSERT INTO entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at)
+          `INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [id, ME.id, date, mood, energy, symptomsJson, note, prompt, now, now]
         );
@@ -419,11 +419,11 @@
       if (!ME) { alert("Sign in to manage sharing."); return; }
       if (on) {
         const id = crypto.randomUUID();
-        await db(`INSERT INTO shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, ?)`,
+        await db(`INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, ?)`,
           [id, ME.id, viewerId, new Date().toISOString()]);
         shares = [...shares, { id, owner_id: ME.id, viewer_id: viewerId }];
       } else {
-        await db(`DELETE FROM shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
+        await db(`DELETE FROM app_mood__shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
         shares = shares.filter(s => !(s.owner_id === ME.id && s.viewer_id === viewerId));
       }
       renderSharing();
