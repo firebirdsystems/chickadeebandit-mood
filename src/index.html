@@ -369,20 +369,6 @@
       return out;
     }
 
-    // ── Activity / notifications (best-effort, never leak content) ─────────
-
-    async function logCheckin(dateStr) {
-      await fetch("/api/activity", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "mood_checkin",
-          description: `${ME.name} completed today's check-in.`,
-          metadata: { deepLink: { appId: APP_ID, params: {} } },
-        }),
-      }).catch(() => {});
-    }
-
     // ── Save / upsert today's entry ─────────────────────────────────────────
 
     async function saveEntry({ date, mood, energy, symptoms, note, prompt, existing }) {
@@ -426,7 +412,6 @@
       if (activeTab === "history") renderHistory();
       if (activeTab === "trends") renderTrends();
 
-      logCheckin(date).catch(() => {});
     }
 
     // ── Sharing actions ─────────────────────────────────────────────────────
