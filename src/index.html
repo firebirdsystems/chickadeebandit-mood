@@ -325,20 +325,23 @@
 
     async function loadShares() {
       if (!ME) { shares = []; return; }
-      const { rows } = await db(
-        `SELECT id, owner_id, viewer_id FROM app_mood__shares WHERE owner_id = ? OR viewer_id = ?`,
-        [ME.id, ME.id]
-      );
-      shares = rows ?? [];
+      const [{ rows: outgoing }, { rows: incoming }] = await Promise.all([
+        db(`SELECT id, owner_id, viewer_id FROM app_mood__shares WHERE owner_id = ?`, [ME.id]),
+        db(`SELECT DISTINCT owner_id FROM app_mood__trend_shares WHERE viewer_id = ?`, [ME.id]),
+      ]);
+      // Combine outgoing shares (full rows with id) and incoming (synthetic rows derived from trend_shares)
+      shares = [
+        ...(outgoing ?? []),
+        ...(incoming ?? []).map(r => ({ owner_id: r.owner_id, viewer_id: ME.id })),
+      ];
     }
 
     async function loadSharedEntries(ownerId) {
       if (sharedEntriesCache.has(ownerId)) return sharedEntriesCache.get(ownerId);
       if (!ME || !canViewTrends(ownerId, ME.id, shares)) return [];
-      // Trend sharing exposes mood/energy/date only — never notes or symptoms.
       const { rows } = await db(
-        `SELECT entry_date, mood, energy FROM app_mood__entries WHERE member_id = ? ORDER BY entry_date ASC`,
-        [ownerId]
+        `SELECT entry_date, mood, energy FROM app_mood__trend_shares WHERE owner_id = ? AND viewer_id = ? ORDER BY entry_date ASC`,
+        [ownerId, ME.id]
       );
       const list = rows ?? [];
       sharedEntriesCache.set(ownerId, list);
@@ -405,6 +408,19 @@
         entries = [created, ...entries];
       }
 
+      // Sync mood/energy to trend_shares for every viewer the current member is sharing with.
+      // Failures are non-fatal: the primary entry is already saved; trend data will catch up
+      // on the next successful save or when the viewer's trend window refreshes.
+      const viewers = shares.filter(s => s.owner_id === ME.id).map(s => s.viewer_id);
+      for (const viewerId of viewers) {
+        db(
+          `INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy)
+             VALUES (?, ?, ?, ?, ?, ?)
+             ON CONFLICT (owner_id, viewer_id, entry_date) DO UPDATE SET mood = excluded.mood, energy = excluded.energy`,
+          [crypto.randomUUID(), ME.id, viewerId, date, mood, energy]
+        ).catch(() => {});
+      }
+
       sharedEntriesCache.delete(ME.id);
       renderToday();
       if (activeTab === "history") renderHistory();
@@ -422,11 +438,22 @@
         await db(`INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, ?)`,
           [id, ME.id, viewerId, new Date().toISOString()]);
         shares = [...shares, { id, owner_id: ME.id, viewer_id: viewerId }];
+        // Back-fill all existing entries so the viewer sees full history from day one.
+        // Individual failures are swallowed: partial history is acceptable, and each future
+        // save will fill in that day's entry going forward.
+        for (const e of entries) {
+          await db(
+            `INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy)
+               VALUES (?, ?, ?, ?, ?, ?)
+               ON CONFLICT (owner_id, viewer_id, entry_date) DO UPDATE SET mood = excluded.mood, energy = excluded.energy`,
+            [crypto.randomUUID(), ME.id, viewerId, e.entry_date, e.mood, e.energy]
+          ).catch(() => {});
+        }
       } else {
         await db(`DELETE FROM app_mood__shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
+        await db(`DELETE FROM app_mood__trend_shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
         shares = shares.filter(s => !(s.owner_id === ME.id && s.viewer_id === viewerId));
       }
-      renderSharing();
     }
 
     // ── Tabs ─────────────────────────────────────────────────────────────────
@@ -505,11 +532,10 @@
         </div>
       `;
 
-      renderScaleRow("mood-row", MOOD_SCALE, draft.mood, v => { draft.mood = v; renderToday(); });
-      renderScaleRow("energy-row", ENERGY_SCALE, draft.energy, v => { draft.energy = v; renderToday(); });
+      renderScaleRow("mood-row", MOOD_SCALE, draft.mood, v => { draft.mood = v; });
+      renderScaleRow("energy-row", ENERGY_SCALE, draft.energy, v => { draft.energy = v; });
       renderChipRow("symptom-row", SYMPTOM_TAGS, draft.symptoms, tag => {
         draft.symptoms = draft.symptoms.includes(tag) ? draft.symptoms.filter(t => t !== tag) : [...draft.symptoms, tag];
-        renderToday();
       });
 
       const noteInput = document.getElementById("note-input");
@@ -530,7 +556,11 @@
         </button>
       `).join("");
       el.querySelectorAll(".scale-btn").forEach(btn => {
-        btn.addEventListener("click", () => onPick(Number(btn.dataset.value)));
+        btn.addEventListener("click", () => {
+          const v = Number(btn.dataset.value);
+          onPick(v);
+          el.querySelectorAll(".scale-btn").forEach(b => b.classList.toggle("selected", Number(b.dataset.value) === v));
+        });
       });
     }
 
@@ -541,7 +571,10 @@
         <button type="button" class="chip ${selected.includes(tag) ? "selected" : ""}" data-tag="${esc(tag)}">${esc(tag)}</button>
       `).join("");
       el.querySelectorAll(".chip").forEach(btn => {
-        btn.addEventListener("click", () => onToggle(btn.dataset.tag));
+        btn.addEventListener("click", () => {
+          onToggle(btn.dataset.tag);
+          btn.classList.toggle("selected");
+        });
       });
     }
 
@@ -777,6 +810,8 @@
       }
 
       const sharedSet = new Set(shares.filter(s => s.owner_id === (ME?.id ?? "")).map(s => s.viewer_id));
+      const sharedWithMeIds = shares.filter(s => s.viewer_id === (ME?.id ?? "") && s.owner_id !== (ME?.id ?? "")).map(s => s.owner_id);
+      const sharedWithMeMembers = sharedWithMeIds.map(id => memberMap.get(id)).filter(Boolean);
 
       panel.innerHTML = `
         <div class="card">
@@ -792,17 +827,31 @@
             </div>
           `).join("")}
         </div>
+        <div class="card">
+          <div class="field-label" style="margin-top:0">Shared with me</div>
+          <p class="hint">These people have chosen to share their mood and energy trends with you. View them in the Trends tab.</p>
+          ${sharedWithMeMembers.length ? sharedWithMeMembers.map(m => `
+            <div class="member-row">
+              <div class="avatar" style="background:${memberColor(m.id, members)}">${esc(initial(m.name))}</div>
+              <div class="member-name">${esc(m.name)}</div>
+            </div>
+          `).join("") : `<div class="empty" style="padding:12px 0">Nobody has shared their trends with you yet.</div>`}
+        </div>
       `;
 
       panel.querySelectorAll(".switch").forEach(sw => {
         sw.addEventListener("click", async () => {
+          if (sw.dataset.pending) return;
           const id = sw.dataset.id;
           const turningOn = !sw.classList.contains("on");
-          sw.disabled = true;
+          sw.classList.toggle("on", turningOn);
+          sw.dataset.pending = "1";
           try {
             await setShare(id, turningOn);
+          } catch {
+            sw.classList.toggle("on", !turningOn);
           } finally {
-            sw.disabled = false;
+            delete sw.dataset.pending;
           }
         });
       });
