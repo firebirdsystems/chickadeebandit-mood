@@ -12,7 +12,12 @@
   "db_plaintext_columns": ["entry_date"],
   "row_policies": {
     "entries": { "kind": "owner_only", "member_column": "member_id", "adults_bypass": false },
-    "shares": { "kind": "owner_only", "member_column": "owner_id", "adults_bypass": false }
+    "shares": { "kind": "owner_only", "member_column": "owner_id", "adults_bypass": false },
+    "trend_shares": {
+      "kind": "party_scoped",
+      "member_columns": ["owner_id", "viewer_id"],
+      "self_column": "owner_id"
+    }
   },
   "data_access": {
     "reads": ["family.members"],

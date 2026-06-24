@@ -317,7 +317,7 @@
       if (!ME) { entries = demoEntries(); return; }
       const { rows } = await db(
         `SELECT id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at
-           FROM app_mood__entries WHERE member_id = ? ORDER BY entry_date DESC`,
+           FROM app_mood__entries WHERE member_id = ? ORDER BY entry_date DESC LIMIT 180`,
         [ME.id]
       );
       entries = rows ?? [];
@@ -424,16 +424,15 @@
           [id, ME.id, viewerId, new Date().toISOString()]);
         shares = [...shares, { id, owner_id: ME.id, viewer_id: viewerId }];
         // Back-fill all existing entries so the viewer sees full history from day one.
-        // Individual failures are swallowed: partial history is acceptable, and each future
-        // save will fill in that day's entry going forward.
-        for (const e of entries) {
-          await db(
+        // Failures are swallowed: partial history is acceptable, each future save fills in that day.
+        await Promise.all(entries.map(e =>
+          db(
             `INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy)
                VALUES (?, ?, ?, ?, ?, ?)
                ON CONFLICT (owner_id, viewer_id, entry_date) DO UPDATE SET mood = excluded.mood, energy = excluded.energy`,
             [crypto.randomUUID(), ME.id, viewerId, e.entry_date, e.mood, e.energy]
-          ).catch(() => {});
-        }
+          ).catch(() => {})
+        ));
       } else {
         await db(`DELETE FROM app_mood__shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
         await db(`DELETE FROM app_mood__trend_shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
@@ -512,7 +511,7 @@
 
           <div class="btn-row">
             ${existing ? `<button class="btn" onclick="cancelEdit()">Cancel</button>` : ""}
-            <button class="btn btn-primary" id="save-btn" onclick="submitToday(${existing ? `'${existing.id}'` : "null"})">${existing ? "Save changes" : "Save check-in"}</button>
+            <button class="btn btn-primary" id="save-btn" data-entry-id="${existing ? esc(existing.id) : ""}" onclick="submitToday(this.dataset.entryId || null)">${existing ? "Save changes" : "Save check-in"}</button>
           </div>
         </div>
       `;
