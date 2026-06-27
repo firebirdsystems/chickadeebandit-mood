@@ -257,7 +257,7 @@
   <div class="tab-panel" id="panel-sharing"></div>
 
   <script type="module">
-    import { esc, memberColor, initial } from "/hub-sdk.js";
+    import { hubAlert, esc, memberColor, initial } from "/hub-sdk.js";
     import {
       MOOD_SCALE, ENERGY_SCALE, SYMPTOM_TAGS, scaleEntry,
       promptForDate, canViewTrends, sharedWithMe,
@@ -417,7 +417,7 @@
     // ── Sharing actions ─────────────────────────────────────────────────────
 
     async function setShare(viewerId, on) {
-      if (!ME) { alert("Sign in to manage sharing."); return; }
+      if (!ME) { hubAlert("Sign in to manage sharing."); return; }
       if (on) {
         const id = crypto.randomUUID();
         await db(`INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, ?)`,
@@ -572,9 +572,9 @@
     };
 
     window.submitToday = async function (existingId) {
-      if (!ME) { alert("Sign in to save a check-in."); return; }
+      if (!ME) { hubAlert("Sign in to save a check-in."); return; }
       if (draft.mood == null || draft.energy == null) {
-        alert("Pick a mood and energy level to save your check-in.");
+        hubAlert("Pick a mood and energy level to save your check-in.");
         return;
       }
       const btn = document.getElementById("save-btn");
