@@ -1,7 +1,7 @@
 {
   "id": "mood",
   "name": "Mood Journal",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Daily private mood and energy check-ins with gentle prompts and trend views over time. Entries stay private by default; opt in to share trends with a parent or partner.",
   "entrypoint": "index.html",
   "runtime": "static",
@@ -11,12 +11,18 @@
   "storage": "db",
   "db_plaintext_columns": ["entry_date"],
   "row_policies": {
-    "entries": { "kind": "owner_only", "member_column": "member_id", "adults_bypass": false },
+    "entries": {
+      "kind": "owner_only",
+      "member_column": "member_id",
+      "adults_bypass": false,
+      "retain_days": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" }
+    },
     "shares": { "kind": "owner_only", "member_column": "owner_id", "adults_bypass": false },
     "trend_shares": {
       "kind": "party_scoped",
       "member_columns": ["owner_id", "viewer_id"],
-      "self_column": "owner_id"
+      "self_column": "owner_id",
+      "retain_days": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" }
     }
   },
   "data_access": {
