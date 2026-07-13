@@ -6,7 +6,7 @@
   "entrypoint": "index.html",
   "runtime": "static",
   "icon": "🌤️",
-  "category": "health",
+  "category": "general",
   "tags": ["wellness", "mood", "journal", "mental-health", "reflection"],
   "storage": "db",
   "db_plaintext_columns": ["entry_date"],
