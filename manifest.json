@@ -1,5 +1,6 @@
 {
   "id": "mood",
+  "contexts": ["household", "shared_space"],
   "name": "Mood Journal",
   "version": "1.2.0",
   "description": "Daily private mood and energy check-ins with gentle prompts and trend views over time. Entries stay private by default; opt in to share trends with a parent or partner.",
