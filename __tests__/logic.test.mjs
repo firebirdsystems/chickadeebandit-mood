@@ -4,7 +4,7 @@ import {
   canViewTrends, sharedWithMe,
   dateDaysAgo, localDateStr, formatEntryDate,
   entriesInWindow, average, symptomFrequency,
-  scaleEntry, MOOD_SCALE,
+  scaleEntry, MOOD_SCALE, searchableFields,
 } from "../src/logic.js";
 
 describe("promptForDate", () => {
@@ -138,5 +138,13 @@ describe("symptomFrequency", () => {
 
   it("ignores malformed symptom data", () => {
     expect(symptomFrequency([{ symptoms: "not json" }, { symptoms: "[]" }])).toEqual([]);
+  });
+});
+
+describe("searchableFields", () => {
+  it("matches on the note and on the flattened symptom tags", () => {
+    const fields = searchableFields({ note: "slept badly again" }, "headache insomnia");
+    expect(fields).toContain("slept badly again");
+    expect(fields).toContain("headache insomnia");
   });
 });

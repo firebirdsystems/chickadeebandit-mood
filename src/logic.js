@@ -144,3 +144,13 @@ export function symptomFrequency(entries) {
     .map(([tag, count]) => ({ tag, count }))
     .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
 }
+
+/**
+ * Fields the in-app search matches against (see hub-sdk `searchMatch`).
+ * The note is the only free text a check-in carries, and symptoms are
+ * stored as tags — "when was I sleeping badly" is a symptom search.
+ * Symptoms are JSON, so the caller passes them in flattened.
+ */
+export function searchableFields(entry, symptomText = "") {
+  return [entry.note, symptomText];
+}

@@ -236,6 +236,13 @@
     }
     .modal h2 { font-size: 1.1rem; margin-bottom: 14px; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+    .search-row { margin-bottom: 12px; }
+    .search-input {
+      width: 100%; border: 1.5px solid var(--border-mid, var(--border, #d1d5db));
+      border-radius: 8px; padding: 9px 11px; font: inherit;
+      background: var(--surface, var(--card, #fff)); color: var(--text, inherit);
+    }
+    .search-input:focus { outline: none; border-color: var(--accent, #6366f1); }
   </style>
 </head>
 <body>
@@ -252,17 +259,22 @@
   </div>
 
   <div class="tab-panel active" id="panel-today"></div>
-  <div class="tab-panel" id="panel-history"></div>
+  <div class="tab-panel" id="panel-history">
+    <div class="search-row" id="search-row" style="display:none">
+      <input id="search" class="search-input" type="search" placeholder="Search check-ins…" aria-label="Search check-ins" />
+    </div>
+    <div id="history-body"></div>
+  </div>
   <div class="tab-panel" id="panel-trends"></div>
   <div class="tab-panel" id="panel-sharing"></div>
 
   <script type="module">
-    import { hubAlert, esc, memberColor, initial } from "/hub-sdk.js";
+    import { hubAlert, esc, memberColor, initial, searchMatch } from "/hub-sdk.js";
     import {
       MOOD_SCALE, ENERGY_SCALE, SYMPTOM_TAGS, scaleEntry,
       promptForDate, canViewTrends, sharedWithMe,
       localDateStr, formatEntryDate,
-      entriesInWindow, average, symptomFrequency,
+      entriesInWindow, average, symptomFrequency, searchableFields,
     } from "./logic.js";
 
     const CONTEXT = window.__CONTEXT_URL ?? "";
@@ -345,6 +357,7 @@
     let shares    = [];   // all share rows touching the current member (as owner or viewer)
 
     let activeTab = "today";
+let searchQ = "";       // in-app search (see logic.js searchableFields)
     let trendWindow = 30;       // days
     let sharedViewerId = null;  // member currently selected in "Shared with me"
     let sharedEntriesCache = new Map(); // memberId -> entries
@@ -690,14 +703,33 @@
       renderHistory();
     };
 
+    // Only the history body is redrawn, so the search box keeps focus.
+    document.addEventListener("input", (e) => {
+      if (e.target.id !== "search") return;
+      searchQ = e.target.value;
+      renderHistory();
+    });
+
     function renderHistory() {
-      const panel = document.getElementById("panel-history");
+      const panel = document.getElementById("history-body");
+      // Only worth offering the box once there is a history to search.
+      const searchRow = document.getElementById("search-row");
+      if (searchRow) searchRow.style.display = entries.length ? "" : "none";
+
       if (!entries.length) {
         panel.innerHTML = `<div class="empty">No check-ins yet — your first entry will show up here.</div>`;
         return;
       }
-      const visible = entries.slice(0, historyLimit);
-      const remaining = entries.length - historyLimit;
+      // A search looks across every entry, not just the loaded page.
+      const matched = searchQ
+        ? entries.filter(e => searchMatch(searchQ, searchableFields(e, safeTags(e.symptoms).join(" "))))
+        : entries;
+      if (!matched.length) {
+        panel.innerHTML = `<div class="empty">No check-ins match "${esc(searchQ)}".</div>`;
+        return;
+      }
+      const visible = searchQ ? matched : matched.slice(0, historyLimit);
+      const remaining = searchQ ? 0 : matched.length - historyLimit;
       const loadMoreBtn = remaining > 0
         ? `<button class="btn" style="width:100%;margin-top:10px" onclick="loadMoreHistory()">Load ${Math.min(remaining, 30)} more (${remaining} remaining)</button>`
         : "";
