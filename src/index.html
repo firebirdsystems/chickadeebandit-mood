@@ -277,7 +277,66 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sql, params }),
       });
-      return res.json();
+      const json = await res.json();
+      // The hub reports a refused write as a JSON body with an `error` key
+      // (403 row policy, 400 bad statement, 507 over quota). fetch() does not
+      // reject on those, so without this throw every caller's rollback and
+      // error toast below is unreachable code.
+      if (!res.ok || json.error) throw new Error(json.error || `Database request failed (${res.status})`);
+      return json;
+    }
+
+    /** Statements the hub accepts in one batched /api/db request. */
+    const DB_BATCH_LIMIT = 10;
+
+    /** Runs several statements as ONE transaction — all of them apply, or none
+     *  does. Used wherever a half-applied pair would leave the two sharing
+     *  tables disagreeing about who may see this member's trends. */
+    async function dbBatch(statements) {
+      if (!DB || statements.length === 0) return { results: [] };
+      const res = await fetch(DB, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statements }),
+      });
+      const json = await res.json();
+      if (!res.ok || json.error) throw new Error(json.error || `Database request failed (${res.status})`);
+      return json;
+    }
+
+    const TREND_UPSERT_SQL =
+      `INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy)
+         VALUES (?, ?, ?, ?, ?, ?)
+         ON CONFLICT (owner_id, viewer_id, entry_date) DO UPDATE SET mood = excluded.mood, energy = excluded.energy`;
+
+    /**
+     * Deletes any trend rows for viewers this member is no longer sharing with.
+     *
+     * The fan-out reads app_mood__shares and then writes app_mood__trend_shares
+     * as two separate requests, so a revoke landing between them (this member on
+     * another device, or a second tab) can leave a revoked viewer holding rows.
+     * The airtight form — `INSERT … SELECT … FROM app_mood__shares`, which
+     * inserts nothing once the share row is gone — is not available: the runtime
+     * rejects INSERT…SELECT that reads a policy-governed table, because such a
+     * source is never rewritten and so would have to fail closed.
+     *
+     * So the write window is made as small as possible (the viewer list is
+     * re-read from the database immediately before the fan-out, never taken
+     * from memory) and anything that still slips through is swept here, on every
+     * load. A resurrected row cannot outlive the owner's next visit.
+     */
+    async function reconcileTrendShares() {
+      if (!ME) return;
+      const allowed = new Set(shares.filter(s => s.owner_id === ME.id).map(s => s.viewer_id));
+      const { rows } = await db(
+        `SELECT DISTINCT viewer_id FROM app_mood__trend_shares WHERE owner_id = ?`, [ME.id],
+      );
+      const stale = (rows ?? []).map(r => r.viewer_id).filter(id => !allowed.has(id));
+      if (stale.length === 0) return;
+      await dbBatch(stale.map(viewerId => ({
+        sql: `DELETE FROM app_mood__trend_shares WHERE owner_id = ? AND viewer_id = ?`,
+        params: [ME.id, viewerId],
+      })));
     }
 
     let members   = [];
@@ -394,17 +453,35 @@
         entries = [created, ...entries];
       }
 
-      // Sync mood/energy to trend_shares for every viewer the current member is sharing with.
-      // Failures are non-fatal: the primary entry is already saved; trend data will catch up
-      // on the next successful save or when the viewer's trend window refreshes.
-      const viewers = shares.filter(s => s.owner_id === ME.id).map(s => s.viewer_id);
-      for (const viewerId of viewers) {
-        db(
-          `INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy)
-             VALUES (?, ?, ?, ?, ?, ?)
-             ON CONFLICT (owner_id, viewer_id, entry_date) DO UPDATE SET mood = excluded.mood, energy = excluded.energy`,
-          [crypto.randomUUID(), ME.id, viewerId, date, mood, energy]
-        ).catch(() => {});
+      // Sync mood/energy to trend_shares for every viewer this member is still
+      // sharing with. The viewer list is re-read from the database rather than
+      // taken from the in-memory `shares` array: that array can be minutes stale,
+      // and using it meant a revoked viewer kept receiving new days' trend rows
+      // until the page was reloaded. See reconcileTrendShares for the residual
+      // window and how it is swept.
+      //
+      // Awaited, and sent as one batch, so a failure is visible and cannot leave
+      // some viewers updated and others not. Failures stay non-fatal — the entry
+      // itself is already saved — but they are surfaced rather than swallowed.
+      try {
+        const { rows: liveRows } = await db(
+          `SELECT viewer_id FROM app_mood__shares WHERE owner_id = ?`, [ME.id],
+        );
+        const viewers = (liveRows ?? []).map(r => r.viewer_id);
+        for (let i = 0; i < viewers.length; i += DB_BATCH_LIMIT) {
+          await dbBatch(viewers.slice(i, i + DB_BATCH_LIMIT).map(viewerId => ({
+            sql: TREND_UPSERT_SQL,
+            params: [crypto.randomUUID(), ME.id, viewerId, date, mood, energy],
+          })));
+        }
+        // Drop any outgoing share the database no longer has, so a revoke made
+        // elsewhere stops being shown as active here too.
+        const live = new Set(viewers);
+        shares = shares.filter(s => s.owner_id !== ME.id || live.has(s.viewer_id));
+      } catch (e) {
+        hubAlert("Your entry was saved, but the people you share trends with weren't updated.", {
+          description: e.message,
+        });
       }
 
       sharedEntriesCache.delete(ME.id);
@@ -423,19 +500,28 @@
         await db(`INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, ?)`,
           [id, ME.id, viewerId, new Date().toISOString()]);
         shares = [...shares, { id, owner_id: ME.id, viewer_id: viewerId }];
-        // Back-fill all existing entries so the viewer sees full history from day one.
-        // Failures are swallowed: partial history is acceptable, each future save fills in that day.
-        await Promise.all(entries.map(e =>
-          db(
-            `INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy)
-               VALUES (?, ?, ?, ?, ?, ?)
-               ON CONFLICT (owner_id, viewer_id, entry_date) DO UPDATE SET mood = excluded.mood, energy = excluded.energy`,
-            [crypto.randomUUID(), ME.id, viewerId, e.entry_date, e.mood, e.energy]
-          ).catch(() => {})
-        ));
+        // Back-fill all existing entries so the viewer sees full history from day
+        // one. Chunked because the batch endpoint takes at most 10 statements per
+        // request; a failed chunk stops the back-fill and is reported, rather than
+        // being swallowed into a silently partial history.
+        try {
+          for (let i = 0; i < entries.length; i += DB_BATCH_LIMIT) {
+            await dbBatch(entries.slice(i, i + DB_BATCH_LIMIT).map(e => ({
+              sql: TREND_UPSERT_SQL,
+              params: [crypto.randomUUID(), ME.id, viewerId, e.entry_date, e.mood, e.energy],
+            })));
+          }
+        } catch (e) {
+          hubAlert("Sharing is on, but past entries weren't all copied across.", { description: e.message });
+        }
       } else {
-        await db(`DELETE FROM app_mood__shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
-        await db(`DELETE FROM app_mood__trend_shares WHERE owner_id = ? AND viewer_id = ?`, [ME.id, viewerId]);
+        // One transaction: revoking used to be two requests, and a failure
+        // between them left the share gone from this member's list while the
+        // viewer kept every trend row they already had.
+        await dbBatch([
+          { sql: `DELETE FROM app_mood__shares WHERE owner_id = ? AND viewer_id = ?`, params: [ME.id, viewerId] },
+          { sql: `DELETE FROM app_mood__trend_shares WHERE owner_id = ? AND viewer_id = ?`, params: [ME.id, viewerId] },
+        ]);
         shares = shares.filter(s => !(s.owner_id === ME.id && s.viewer_id === viewerId));
       }
     }
@@ -858,6 +944,10 @@
     (async () => {
       await Promise.all([loadMembers(), loadEntries(), loadShares()]);
       renderToday();
+      // Best-effort sweep of trend rows left behind by a revoke that raced a
+      // save on another device. Runs after the first paint: it repairs sharing
+      // state, it is not needed to draw anything.
+      reconcileTrendShares().catch(() => {});
     })();
   </script>
 </body>

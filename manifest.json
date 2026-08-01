@@ -10,7 +10,7 @@
   "category": "general",
   "tags": ["wellness", "mood", "journal", "mental-health", "reflection"],
   "storage": "db",
-  "db_plaintext_columns": ["entry_date"],
+  "db_plaintext_columns": ["entry_date", "mood", "energy"],
   "row_policies": {
     "entries": {
       "kind": "owner_only",
@@ -25,6 +25,17 @@
       "self_column": "owner_id",
       "retain_days": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" }
     }
+  },
+  "member_references": {
+    "entries": { "column": "member_id", "on_removed": "delete" },
+    "shares": [
+      { "column": "owner_id", "on_removed": "delete" },
+      { "column": "viewer_id", "on_removed": "delete" }
+    ],
+    "trend_shares": [
+      { "column": "owner_id", "on_removed": "delete" },
+      { "column": "viewer_id", "on_removed": "delete" }
+    ]
   },
   "data_access": {
     "reads": ["family.members"],
