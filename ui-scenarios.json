@@ -1,0 +1,79 @@
+{
+  "scenarios": [
+    {
+      "name": "a shared trend is averaged in the viewer's browser from the numbers alone",
+      "members": {
+        "owner": "adult",
+        "viewer": "adult"
+      },
+      "steps": [
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES ('md-t1', ?, ?, date('now'), 2, 2)",
+          "params": [
+            "{{owner}}",
+            "{{viewer}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES ('md-t2', ?, ?, date('now','-1 day'), 4, 4)",
+          "params": [
+            "{{owner}}",
+            "{{viewer}}"
+          ]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES ('md-t3', ?, ?, date('now','-2 days'), 5, 4)",
+          "params": [
+            "{{owner}}",
+            "{{viewer}}"
+          ]
+        },
+        {
+          "action": "open",
+          "as": "viewer"
+        },
+        {
+          "action": "expectVisible",
+          "as": "viewer",
+          "selector": "#panel-today[data-boot=\"ready\"]"
+        },
+        {
+          "action": "expectVisible",
+          "as": "viewer",
+          "selector": "[data-testid=\"app-tab\"][data-tab=\"trends\"]"
+        },
+        {
+          "action": "click",
+          "as": "viewer",
+          "selector": "[data-testid=\"app-tab\"][data-tab=\"trends\"]"
+        },
+        {
+          "action": "expectVisible",
+          "as": "viewer",
+          "selector": "[data-testid=\"shared-trend\"] [data-testid=\"trend-summary\"]"
+        },
+        {
+          "action": "expectText",
+          "as": "viewer",
+          "selector": "[data-testid=\"shared-trend\"] [data-testid=\"trend-summary\"]",
+          "text": "3 check-ins"
+        },
+        {
+          "action": "expectText",
+          "as": "viewer",
+          "selector": "[data-testid=\"shared-trend\"] [data-testid=\"trend-summary\"]",
+          "text": "avg mood 3.7 / 5"
+        },
+        {
+          "action": "expectText",
+          "as": "viewer",
+          "selector": "[data-testid=\"shared-trend\"] [data-testid=\"trend-summary\"]",
+          "text": "avg energy 3.3 / 5"
+        }
+      ]
+    }
+  ]
+}

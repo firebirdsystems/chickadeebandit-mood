@@ -254,7 +254,7 @@
   <div class="tabs">
     <button class="tab-btn active" data-tab="today" onclick="switchTab('today')">Today</button>
     <button class="tab-btn" data-tab="history" onclick="switchTab('history')">History</button>
-    <button class="tab-btn" data-tab="trends" onclick="switchTab('trends')">Trends</button>
+    <button class="tab-btn" data-testid="app-tab" data-tab="trends" onclick="switchTab('trends')">Trends</button>
     <button class="tab-btn" data-tab="sharing" onclick="switchTab('sharing')">Sharing</button>
   </div>
 
@@ -799,13 +799,13 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
             <button class="window-btn ${trendWindow === 30 ? "active" : ""}" onclick="setTrendWindow(30)">30 days</button>
             <button class="window-btn ${trendWindow === 90 ? "active" : ""}" onclick="setTrendWindow(90)">90 days</button>
           </div>
-          <div id="my-trend-body"></div>
+          <div id="my-trend-body" data-testid="my-trend"></div>
         </div>
         ${owners.length ? `
           <div class="card">
             <div class="field-label" style="margin-top:0">Shared with me</div>
             <div class="chip-row" id="shared-picker" style="margin-bottom:14px"></div>
-            <div id="shared-trend-body"></div>
+            <div id="shared-trend-body" data-testid="shared-trend"></div>
           </div>
         ` : ""}
       `;
@@ -843,7 +843,7 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
 
       el.innerHTML = `
         <div class="chart-title">${esc(title)} — last ${trendWindow} days</div>
-        <p class="chart-summary">${windowed.length} check-in${windowed.length === 1 ? "" : "s"} · avg mood ${moodAvg ?? "—"} / 5 · avg energy ${energyAvg ?? "—"} / 5</p>
+        <p class="chart-summary" data-testid="trend-summary" data-checkins="${windowed.length}">${windowed.length} check-in${windowed.length === 1 ? "" : "s"} · avg mood ${moodAvg ?? "—"} / 5 · avg energy ${energyAvg ?? "—"} / 5</p>
         <div class="chart-wrap">${trendChartSvg(windowed, "mood", "#6366f1", "Mood")}</div>
         <div class="chart-wrap" style="margin-top:10px">${trendChartSvg(windowed, "energy", "#f59e0b", "Energy")}</div>
         ${!sharedView ? symptomTallyHtml(windowed) : ""}
@@ -976,6 +976,10 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
     (async () => {
       await Promise.all([loadMembers(), loadEntries(), loadShares()]);
       renderToday();
+      // Boot marker: the tab buttons are static shell markup, so without this a
+      // click can land before shares have loaded and the "Shared with me" card
+      // never renders (renderTrends is not re-run when the data arrives).
+      document.getElementById("panel-today")?.setAttribute("data-boot", "ready");
       // Best-effort sweep of trend rows left behind by a revoke that raced a
       // save on another device. Runs after the first paint: it repairs sharing
       // state, it is not needed to draw anything.
