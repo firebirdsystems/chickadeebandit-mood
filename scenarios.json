@@ -1,0 +1,129 @@
+{
+  "scenarios": [
+    {
+      "name": "journal entries are private to their author — not even a parent or partner can read or edit them",
+      "members": { "parent": "adult", "partner": "adult", "teen": "child" },
+      "steps": [
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES ('e_teen', ?, '2026-01-01', 2, 3, '[\"tired\"]', 'rough day at school', 'What weighed on you?', '2026-01-01T20:00:00Z', '2026-01-01T20:00:00Z'), ('e_partner', ?, '2026-01-01', 4, 4, '[]', 'good run', 'What went well?', '2026-01-01T21:00:00Z', '2026-01-01T21:00:00Z')",
+          "params": ["{{teen}}", "{{partner}}"]
+        },
+        {
+          "action": "db",
+          "as": "parent",
+          "sql": "SELECT id FROM app_mood__entries",
+          "expect": { "status": 200, "rowCount": 0 }
+        },
+        {
+          "action": "db",
+          "as": "partner",
+          "sql": "SELECT id FROM app_mood__entries",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "e_partner" }] }
+        },
+        {
+          "action": "db",
+          "as": "teen",
+          "sql": "SELECT id, mood, note FROM app_mood__entries",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "e_teen", "mood": 2, "note": "rough day at school" }] }
+        },
+        {
+          "action": "db",
+          "as": "parent",
+          "sql": "UPDATE app_mood__entries SET mood = 5 WHERE id = 'e_teen'"
+        },
+        {
+          "action": "db",
+          "as": "teen",
+          "sql": "SELECT mood FROM app_mood__entries WHERE id = 'e_teen'",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "mood": 2 }] }
+        }
+      ]
+    },
+    {
+      "name": "one check-in per member per day",
+      "members": { "me": "adult" },
+      "steps": [
+        {
+          "action": "db",
+          "as": "me",
+          "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, created_at, updated_at) VALUES ('d1', ?, '2026-01-05', 3, 3, '2026-01-05T08:00:00Z', '2026-01-05T08:00:00Z')",
+          "params": ["{{me}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "me",
+          "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, created_at, updated_at) VALUES ('d2', ?, '2026-01-05', 4, 4, '2026-01-05T09:00:00Z', '2026-01-05T09:00:00Z')",
+          "params": ["{{me}}"],
+          "expect": { "status": 400 }
+        },
+        {
+          "action": "db",
+          "as": "me",
+          "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, created_at, updated_at) VALUES ('d3', ?, '2026-01-06', 4, 4, '2026-01-06T08:00:00Z', '2026-01-06T08:00:00Z')",
+          "params": ["{{me}}"],
+          "expect": { "status": 200 }
+        },
+        {
+          "action": "db",
+          "as": "me",
+          "sql": "SELECT id FROM app_mood__entries",
+          "expect": { "status": 200, "rowCount": 2 }
+        }
+      ]
+    },
+    {
+      "name": "shared trend numbers reach only the designated viewer, and nobody can mint a share of someone else's trend",
+      "members": { "owner": "adult", "viewer": "adult", "outsider": "adult" },
+      "steps": [
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES ('s1', ?, ?, '2026-01-01T00:00:00Z')",
+          "params": ["{{owner}}", "{{viewer}}"]
+        },
+        {
+          "action": "seedRaw",
+          "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES ('t1', ?, ?, '2026-01-01', 3, 4)",
+          "params": ["{{owner}}", "{{viewer}}"]
+        },
+        {
+          "action": "db",
+          "as": "viewer",
+          "sql": "SELECT id, mood, energy FROM app_mood__trend_shares",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "t1", "mood": 3, "energy": 4 }] }
+        },
+        {
+          "action": "db",
+          "as": "outsider",
+          "sql": "SELECT id FROM app_mood__trend_shares",
+          "expect": { "status": 200, "rowCount": 0 }
+        },
+        {
+          "action": "db",
+          "as": "outsider",
+          "sql": "SELECT id FROM app_mood__shares",
+          "expect": { "status": 200, "rowCount": 0 }
+        },
+        {
+          "action": "db",
+          "as": "owner",
+          "sql": "SELECT id FROM app_mood__shares",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "s1" }] }
+        },
+        {
+          "action": "db",
+          "as": "outsider",
+          "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES ('t_forged', ?, ?, '2026-01-02', 1, 1)",
+          "params": ["{{owner}}", "{{outsider}}"]
+        },
+        {
+          "action": "db",
+          "as": "owner",
+          "sql": "SELECT id FROM app_mood__trend_shares",
+          "expect": { "status": 200, "rowCount": 1, "rowsContain": [{ "id": "t1" }] }
+        }
+      ]
+    }
+  ]
+}
