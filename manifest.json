@@ -10,6 +10,12 @@
   "category": "general",
   "tags": ["wellness", "mood", "journal", "mental-health", "reflection"],
   "storage": "db",
+  "preload": {
+    "entries": { "sql": "SELECT id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at FROM app_mood__entries WHERE member_id = ? ORDER BY entry_date DESC LIMIT 180", "params": [":me"] },
+    "outgoing_shares": { "sql": "SELECT id, owner_id, viewer_id FROM app_mood__shares WHERE owner_id = ?", "params": [":me"] },
+    "incoming_shares": { "sql": "SELECT DISTINCT owner_id FROM app_mood__trend_shares WHERE viewer_id = ?", "params": [":me"] },
+    "trend_viewers": { "sql": "SELECT DISTINCT viewer_id FROM app_mood__trend_shares WHERE owner_id = ?", "params": [":me"] }
+  },
   "db_plaintext_columns": ["entry_date", "mood", "energy"],
   "row_policies": {
     "entries": {
