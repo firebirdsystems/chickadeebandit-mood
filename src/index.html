@@ -247,7 +247,7 @@
 </head>
 <body>
   <div class="app-header">
-    <h1>🌤️ Mood Journal</h1>
+    <h1><span id="page-glyph"></span> Mood Journal</h1>
     <p class="subtitle">Private check-ins and trends — yours stay yours unless you choose to share</p>
   </div>
 
@@ -269,7 +269,9 @@
   <div class="tab-panel" id="panel-sharing"></div>
 
   <script type="module">
-    import { hubAlert, esc, memberColor, initial, searchMatch, hubToday } from "/hub-sdk.js";
+    import { hubAlert, esc, memberColor, initial, searchMatch, hubToday, glyph } from "/hub-sdk.js";
+
+    document.getElementById("page-glyph").innerHTML = glyph("mood");
 
 // The household's calendar day as a Date, for the pure helpers in logic.js.
 // Those helpers default their date parameter to `new Date()` — the VIEWER
