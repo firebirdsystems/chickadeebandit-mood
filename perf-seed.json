@@ -1,0 +1,2239 @@
+{
+  "seed": [
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-1 days','-2 hours'))",
+      "params": [
+        "perf-entry-001",
+        "{{me}}",
+        "{{date:-1}}",
+        4,
+        2,
+        "[\"Headache\"]",
+        "Slept badly, short fuse all morning.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-2 days','-2 hours'))",
+      "params": [
+        "perf-entry-002",
+        "{{me}}",
+        "{{date:-2}}",
+        4,
+        3,
+        "[\"Calm\"]",
+        "Good run before breakfast.",
+        "Who or what made you smile today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-3 days','-2 hours'))",
+      "params": [
+        "perf-entry-003",
+        "{{me}}",
+        "{{date:-3}}",
+        4,
+        3,
+        "[\"Hopeful\", \"Headache\"]",
+        "Worried about the budget meeting.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-4 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-4 days','-2 hours'))",
+      "params": [
+        "perf-entry-004",
+        "{{me}}",
+        "{{date:-4}}",
+        2,
+        4,
+        "[\"Sore\"]",
+        "Kids were hilarious at bedtime."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-5 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-5 days','-2 hours'))",
+      "params": [
+        "perf-entry-005",
+        "{{me}}",
+        "{{date:-5}}",
+        4,
+        3,
+        "[\"Restless\"]",
+        "Quiet day, nothing much to report.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-6 days','-2 hours'))",
+      "params": [
+        "perf-entry-006",
+        "{{me}}",
+        "{{date:-6}}",
+        2,
+        2,
+        "[\"Irritable\", \"Tired\"]",
+        "Headache most of the afternoon.",
+        "What's a small win you can celebrate today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-8 days','-2 hours'))",
+      "params": [
+        "perf-entry-007",
+        "{{me}}",
+        "{{date:-8}}",
+        4,
+        2,
+        "[]",
+        "Coffee with an old friend."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-9 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-9 days','-2 hours'))",
+      "params": [
+        "perf-entry-008",
+        "{{me}}",
+        "{{date:-9}}",
+        2,
+        4,
+        "[\"Grateful\", \"Restless\"]",
+        "Too much screen time, felt restless.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-10 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-10 days','-2 hours'))",
+      "params": [
+        "perf-entry-009",
+        "{{me}}",
+        "{{date:-10}}",
+        4,
+        3,
+        "[\"Anxious\"]",
+        "What's one thing that went well today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-12 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-12 days','-2 hours'))",
+      "params": [
+        "perf-entry-010",
+        "{{me}}",
+        "{{date:-12}}",
+        3,
+        5,
+        "[\"Calm\", \"Calm\"]"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-13 days','-2 hours'))",
+      "params": [
+        "perf-entry-011",
+        "{{me}}",
+        "{{date:-13}}",
+        5,
+        2,
+        "[\"Hopeful\"]",
+        "Long day at work but dinner together helped.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-14 days','-2 hours'))",
+      "params": [
+        "perf-entry-012",
+        "{{me}}",
+        "{{date:-14}}",
+        1,
+        3,
+        "[\"Sore\"]",
+        "Slept badly, short fuse all morning.",
+        "What helped you feel calm today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-15 days','-2 hours'))",
+      "params": [
+        "perf-entry-013",
+        "{{me}}",
+        "{{date:-15}}",
+        5,
+        2,
+        "[\"Restless\", \"Grateful\"]",
+        "Good run before breakfast.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-16 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-16 days','-2 hours'))",
+      "params": [
+        "perf-entry-014",
+        "{{me}}",
+        "{{date:-16}}",
+        1,
+        4,
+        "[]",
+        "Worried about the budget meeting."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-18 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-18 days','-2 hours'))",
+      "params": [
+        "perf-entry-015",
+        "{{me}}",
+        "{{date:-18}}",
+        5,
+        4,
+        "[\"Tired\", \"Irritable\"]",
+        "Quiet day, nothing much to report.",
+        "What's one thing you'd like tomorrow to look like?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-19 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-19 days','-2 hours'))",
+      "params": [
+        "perf-entry-016",
+        "{{me}}",
+        "{{date:-19}}",
+        3,
+        5,
+        "[\"Grateful\"]",
+        "Headache most of the afternoon.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-20 days','-2 hours'))",
+      "params": [
+        "perf-entry-017",
+        "{{me}}",
+        "{{date:-20}}",
+        5,
+        2,
+        "[\"Anxious\"]",
+        "Finished the project I'd been dreading."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-21 days','-2 hours'))",
+      "params": [
+        "perf-entry-018",
+        "{{me}}",
+        "{{date:-21}}",
+        3,
+        3,
+        "[\"Headache\", \"Hopeful\"]",
+        "Coffee with an old friend.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-22 days','-2 hours'))",
+      "params": [
+        "perf-entry-019",
+        "{{me}}",
+        "{{date:-22}}",
+        3,
+        2,
+        "[\"Calm\"]",
+        "Too much screen time, felt restless.",
+        "Who or what made you smile today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-23 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-23 days','-2 hours'))",
+      "params": [
+        "perf-entry-020",
+        "{{me}}",
+        "{{date:-23}}",
+        4,
+        4,
+        "[\"Hopeful\"]",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-24 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-24 days','-2 hours'))",
+      "params": [
+        "perf-entry-021",
+        "{{me}}",
+        "{{date:-24}}",
+        4,
+        3,
+        "[]"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-25 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-25 days','-2 hours'))",
+      "params": [
+        "perf-entry-022",
+        "{{me}}",
+        "{{date:-25}}",
+        4,
+        4,
+        "[\"Restless\"]",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-26 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-26 days','-2 hours'))",
+      "params": [
+        "perf-entry-023",
+        "{{me}}",
+        "{{date:-26}}",
+        4,
+        5,
+        "[\"Irritable\"]",
+        "Long day at work but dinner together helped.",
+        "What's a small win you can celebrate today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-28 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-28 days','-2 hours'))",
+      "params": [
+        "perf-entry-024",
+        "{{me}}",
+        "{{date:-28}}",
+        4,
+        3,
+        "[\"Tired\"]",
+        "Good run before breakfast."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-29 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-29 days','-2 hours'))",
+      "params": [
+        "perf-entry-025",
+        "{{me}}",
+        "{{date:-29}}",
+        2,
+        2,
+        "[\"Grateful\"]",
+        "Worried about the budget meeting.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-30 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-30 days','-2 hours'))",
+      "params": [
+        "perf-entry-026",
+        "{{me}}",
+        "{{date:-30}}",
+        4,
+        1,
+        "[\"Anxious\", \"Sore\"]",
+        "Kids were hilarious at bedtime.",
+        "What's one thing that went well today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-31 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-31 days','-2 hours'))",
+      "params": [
+        "perf-entry-027",
+        "{{me}}",
+        "{{date:-31}}",
+        2,
+        3,
+        "[\"Headache\"]",
+        "Quiet day, nothing much to report.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-32 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-32 days','-2 hours'))",
+      "params": [
+        "perf-entry-028",
+        "{{me}}",
+        "{{date:-32}}",
+        3,
+        4,
+        "[]",
+        "Headache most of the afternoon."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-33 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-33 days','-2 hours'))",
+      "params": [
+        "perf-entry-029",
+        "{{me}}",
+        "{{date:-33}}",
+        4,
+        3,
+        "[\"Hopeful\", \"Headache\"]",
+        "Finished the project I'd been dreading.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-35 days','-2 hours'))",
+      "params": [
+        "perf-entry-030",
+        "{{me}}",
+        "{{date:-35}}",
+        4,
+        3,
+        "[\"Restless\"]",
+        "Too much screen time, felt restless.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-36 days','-2 hours'))",
+      "params": [
+        "perf-entry-031",
+        "{{me}}",
+        "{{date:-36}}",
+        2,
+        3,
+        "[\"Irritable\", \"Tired\"]"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-38 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-38 days','-2 hours'))",
+      "params": [
+        "perf-entry-032",
+        "{{me}}",
+        "{{date:-38}}",
+        5,
+        3,
+        "[\"Tired\"]",
+        "What's one thing you'd like tomorrow to look like?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-39 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-39 days','-2 hours'))",
+      "params": [
+        "perf-entry-033",
+        "{{me}}",
+        "{{date:-39}}",
+        1,
+        2,
+        "[\"Grateful\", \"Restless\"]",
+        "Long day at work but dinner together helped.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-40 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-40 days','-2 hours'))",
+      "params": [
+        "perf-entry-034",
+        "{{me}}",
+        "{{date:-40}}",
+        5,
+        3,
+        "[]",
+        "Slept badly, short fuse all morning."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-41 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-41 days','-2 hours'))",
+      "params": [
+        "perf-entry-035",
+        "{{me}}",
+        "{{date:-41}}",
+        1,
+        4,
+        "[\"Headache\"]",
+        "Good run before breakfast.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-42 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-42 days','-2 hours'))",
+      "params": [
+        "perf-entry-036",
+        "{{me}}",
+        "{{date:-42}}",
+        4,
+        4,
+        "[\"Calm\", \"Calm\"]",
+        "Worried about the budget meeting.",
+        "Who or what made you smile today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-43 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-43 days','-2 hours'))",
+      "params": [
+        "perf-entry-037",
+        "{{me}}",
+        "{{date:-43}}",
+        5,
+        3,
+        "[\"Hopeful\"]",
+        "Kids were hilarious at bedtime.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-44 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-44 days','-2 hours'))",
+      "params": [
+        "perf-entry-038",
+        "{{me}}",
+        "{{date:-44}}",
+        3,
+        1,
+        "[\"Sore\"]",
+        "Quiet day, nothing much to report."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-45 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-45 days','-2 hours'))",
+      "params": [
+        "perf-entry-039",
+        "{{me}}",
+        "{{date:-45}}",
+        5,
+        3,
+        "[\"Restless\", \"Grateful\"]",
+        "Headache most of the afternoon.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-46 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-46 days','-2 hours'))",
+      "params": [
+        "perf-entry-040",
+        "{{me}}",
+        "{{date:-46}}",
+        3,
+        2,
+        "[\"Irritable\"]",
+        "Finished the project I'd been dreading.",
+        "What's a small win you can celebrate today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-48 days','-2 hours'))",
+      "params": [
+        "perf-entry-041",
+        "{{me}}",
+        "{{date:-48}}",
+        4,
+        3,
+        "[]",
+        "Too much screen time, felt restless."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-49 days','-2 hours'))",
+      "params": [
+        "perf-entry-042",
+        "{{me}}",
+        "{{date:-49}}",
+        4,
+        4,
+        "[\"Grateful\"]",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-50 days','-2 hours'))",
+      "params": [
+        "perf-entry-043",
+        "{{me}}",
+        "{{date:-50}}",
+        4,
+        3,
+        "[\"Anxious\"]",
+        "What's one thing that went well today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-51 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-51 days','-2 hours'))",
+      "params": [
+        "perf-entry-044",
+        "{{me}}",
+        "{{date:-51}}",
+        4,
+        2,
+        "[\"Headache\", \"Hopeful\"]",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-52 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-52 days','-2 hours'))",
+      "params": [
+        "perf-entry-045",
+        "{{me}}",
+        "{{date:-52}}",
+        4,
+        3,
+        "[\"Calm\"]",
+        "Long day at work but dinner together helped."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-53 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-53 days','-2 hours'))",
+      "params": [
+        "perf-entry-046",
+        "{{me}}",
+        "{{date:-53}}",
+        4,
+        2,
+        "[\"Hopeful\"]",
+        "Slept badly, short fuse all morning.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-54 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-54 days','-2 hours'))",
+      "params": [
+        "perf-entry-047",
+        "{{me}}",
+        "{{date:-54}}",
+        2,
+        4,
+        "[\"Sore\", \"Anxious\"]",
+        "Good run before breakfast.",
+        "What helped you feel calm today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-55 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-55 days','-2 hours'))",
+      "params": [
+        "perf-entry-048",
+        "{{me}}",
+        "{{date:-55}}",
+        4,
+        3,
+        "[\"Restless\"]",
+        "Worried about the budget meeting.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-56 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-56 days','-2 hours'))",
+      "params": [
+        "perf-entry-049",
+        "{{me}}",
+        "{{date:-56}}",
+        2,
+        4,
+        "[]",
+        "Kids were hilarious at bedtime."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-58 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-58 days','-2 hours'))",
+      "params": [
+        "perf-entry-050",
+        "{{me}}",
+        "{{date:-58}}",
+        4,
+        2,
+        "[\"Tired\"]",
+        "Headache most of the afternoon.",
+        "What's one thing you'd like tomorrow to look like?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-59 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-59 days','-2 hours'))",
+      "params": [
+        "perf-entry-051",
+        "{{me}}",
+        "{{date:-59}}",
+        2,
+        3,
+        "[\"Grateful\"]",
+        "Finished the project I'd been dreading.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-60 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-60 days','-2 hours'))",
+      "params": [
+        "perf-entry-052",
+        "{{me}}",
+        "{{date:-60}}",
+        4,
+        2,
+        "[\"Anxious\", \"Sore\"]",
+        "Coffee with an old friend."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-61 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-61 days','-2 hours'))",
+      "params": [
+        "perf-entry-053",
+        "{{me}}",
+        "{{date:-61}}",
+        2,
+        4,
+        "[\"Headache\"]",
+        "Too much screen time, felt restless.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-62 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-62 days','-2 hours'))",
+      "params": [
+        "perf-entry-054",
+        "{{me}}",
+        "{{date:-62}}",
+        3,
+        3,
+        "[\"Calm\"]",
+        "Who or what made you smile today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-63 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-63 days','-2 hours'))",
+      "params": [
+        "perf-entry-055",
+        "{{me}}",
+        "{{date:-63}}",
+        5,
+        4,
+        "[\"Hopeful\", \"Headache\"]",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-64 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-64 days','-2 hours'))",
+      "params": [
+        "perf-entry-056",
+        "{{me}}",
+        "{{date:-64}}",
+        1,
+        5,
+        "[]"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-65 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-65 days','-2 hours'))",
+      "params": [
+        "perf-entry-057",
+        "{{me}}",
+        "{{date:-65}}",
+        5,
+        2,
+        "[\"Restless\"]",
+        "Long day at work but dinner together helped.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-66 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-66 days','-2 hours'))",
+      "params": [
+        "perf-entry-058",
+        "{{me}}",
+        "{{date:-66}}",
+        1,
+        3,
+        "[\"Irritable\", \"Tired\"]",
+        "Slept badly, short fuse all morning.",
+        "What's a small win you can celebrate today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-68 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-68 days','-2 hours'))",
+      "params": [
+        "perf-entry-059",
+        "{{me}}",
+        "{{date:-68}}",
+        5,
+        4,
+        "[\"Tired\"]",
+        "Worried about the budget meeting."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-69 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-69 days','-2 hours'))",
+      "params": [
+        "perf-entry-060",
+        "{{me}}",
+        "{{date:-69}}",
+        3,
+        3,
+        "[\"Grateful\", \"Restless\"]",
+        "Kids were hilarious at bedtime.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-70 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-70 days','-2 hours'))",
+      "params": [
+        "perf-entry-061",
+        "{{me}}",
+        "{{date:-70}}",
+        5,
+        4,
+        "[\"Anxious\"]",
+        "Quiet day, nothing much to report.",
+        "What's one thing that went well today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-71 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-71 days','-2 hours'))",
+      "params": [
+        "perf-entry-062",
+        "{{me}}",
+        "{{date:-71}}",
+        3,
+        5,
+        "[\"Headache\"]",
+        "Headache most of the afternoon.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-72 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-72 days','-2 hours'))",
+      "params": [
+        "perf-entry-063",
+        "{{me}}",
+        "{{date:-72}}",
+        3,
+        4,
+        "[]",
+        "Finished the project I'd been dreading."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-73 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-73 days','-2 hours'))",
+      "params": [
+        "perf-entry-064",
+        "{{me}}",
+        "{{date:-73}}",
+        4,
+        3,
+        "[\"Hopeful\"]",
+        "Coffee with an old friend.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-74 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-74 days','-2 hours'))",
+      "params": [
+        "perf-entry-065",
+        "{{me}}",
+        "{{date:-74}}",
+        4,
+        2,
+        "[\"Sore\"]",
+        "Too much screen time, felt restless.",
+        "What helped you feel calm today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-75 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-75 days','-2 hours'))",
+      "params": [
+        "perf-entry-066",
+        "{{me}}",
+        "{{date:-75}}",
+        4,
+        1,
+        "[\"Restless\", \"Grateful\"]",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-76 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-76 days','-2 hours'))",
+      "params": [
+        "perf-entry-067",
+        "{{me}}",
+        "{{date:-76}}",
+        4,
+        3,
+        "[\"Irritable\"]"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-78 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-78 days','-2 hours'))",
+      "params": [
+        "perf-entry-068",
+        "{{me}}",
+        "{{date:-78}}",
+        4,
+        3,
+        "[\"Tired\", \"Irritable\"]",
+        "Long day at work but dinner together helped.",
+        "What's one thing you'd like tomorrow to look like?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-79 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-79 days','-2 hours'))",
+      "params": [
+        "perf-entry-069",
+        "{{me}}",
+        "{{date:-79}}",
+        2,
+        4,
+        "[\"Grateful\"]",
+        "Slept badly, short fuse all morning.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-81 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-81 days','-2 hours'))",
+      "params": [
+        "perf-entry-070",
+        "{{me}}",
+        "{{date:-81}}",
+        2,
+        3,
+        "[\"Headache\", \"Hopeful\"]",
+        "Worried about the budget meeting.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-82 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-82 days','-2 hours'))",
+      "params": [
+        "perf-entry-071",
+        "{{me}}",
+        "{{date:-82}}",
+        3,
+        1,
+        "[\"Calm\"]",
+        "Kids were hilarious at bedtime.",
+        "Who or what made you smile today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-83 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-83 days','-2 hours'))",
+      "params": [
+        "perf-entry-072",
+        "{{me}}",
+        "{{date:-83}}",
+        4,
+        3,
+        "[\"Hopeful\"]",
+        "Quiet day, nothing much to report.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-84 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-84 days','-2 hours'))",
+      "params": [
+        "perf-entry-073",
+        "{{me}}",
+        "{{date:-84}}",
+        2,
+        2,
+        "[\"Sore\", \"Anxious\"]",
+        "Headache most of the afternoon."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-85 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-85 days','-2 hours'))",
+      "params": [
+        "perf-entry-074",
+        "{{me}}",
+        "{{date:-85}}",
+        4,
+        3,
+        "[\"Restless\"]",
+        "Finished the project I'd been dreading.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-86 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-86 days','-2 hours'))",
+      "params": [
+        "perf-entry-075",
+        "{{me}}",
+        "{{date:-86}}",
+        2,
+        4,
+        "[\"Irritable\"]",
+        "Coffee with an old friend.",
+        "What's a small win you can celebrate today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-88 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-88 days','-2 hours'))",
+      "params": [
+        "perf-entry-076",
+        "{{me}}",
+        "{{date:-88}}",
+        5,
+        3,
+        "[]"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-89 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-89 days','-2 hours'))",
+      "params": [
+        "perf-entry-077",
+        "{{me}}",
+        "{{date:-89}}",
+        1,
+        1,
+        "[\"Grateful\"]",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-90 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-90 days','-2 hours'))",
+      "params": [
+        "perf-entry-078",
+        "{{me}}",
+        "{{date:-90}}",
+        5,
+        3,
+        "[\"Anxious\", \"Sore\"]",
+        "What's one thing that went well today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-91 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-91 days','-2 hours'))",
+      "params": [
+        "perf-entry-079",
+        "{{me}}",
+        "{{date:-91}}",
+        1,
+        2,
+        "[\"Headache\"]",
+        "Long day at work but dinner together helped.",
+        "What's weighing on you right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-92 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-92 days','-2 hours'))",
+      "params": [
+        "perf-entry-080",
+        "{{me}}",
+        "{{date:-92}}",
+        4,
+        3,
+        "[\"Calm\"]",
+        "Slept badly, short fuse all morning."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-93 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-93 days','-2 hours'))",
+      "params": [
+        "perf-entry-081",
+        "{{me}}",
+        "{{date:-93}}",
+        5,
+        3,
+        "[\"Hopeful\", \"Headache\"]",
+        "Good run before breakfast.",
+        "What's something you're looking forward to?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-94 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-94 days','-2 hours'))",
+      "params": [
+        "perf-entry-082",
+        "{{me}}",
+        "{{date:-94}}",
+        3,
+        4,
+        "[\"Sore\"]",
+        "Worried about the budget meeting.",
+        "What helped you feel calm today?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-95 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-95 days','-2 hours'))",
+      "params": [
+        "perf-entry-083",
+        "{{me}}",
+        "{{date:-95}}",
+        5,
+        3,
+        "[\"Restless\"]",
+        "Kids were hilarious at bedtime.",
+        "Is there something you need more of this week?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-96 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-96 days','-2 hours'))",
+      "params": [
+        "perf-entry-084",
+        "{{me}}",
+        "{{date:-96}}",
+        3,
+        2,
+        "[]",
+        "Quiet day, nothing much to report."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-98 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-98 days','-2 hours'))",
+      "params": [
+        "perf-entry-085",
+        "{{me}}",
+        "{{date:-98}}",
+        4,
+        2,
+        "[\"Tired\"]",
+        "Finished the project I'd been dreading.",
+        "What's one thing you'd like tomorrow to look like?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, prompt, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-99 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-99 days','-2 hours'))",
+      "params": [
+        "perf-entry-086",
+        "{{me}}",
+        "{{date:-99}}",
+        4,
+        4,
+        "[\"Grateful\", \"Restless\"]",
+        "Coffee with an old friend.",
+        "What are you grateful for right now?"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__entries (id, member_id, entry_date, mood, energy, symptoms, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-100 days','-2 hours'), strftime('%Y-%m-%dT%H:%M:%fZ','now','-100 days','-2 hours'))",
+      "params": [
+        "perf-entry-087",
+        "{{me}}",
+        "{{date:-100}}",
+        4,
+        3,
+        "[\"Anxious\"]",
+        "Too much screen time, felt restless."
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-60 days'))",
+      "params": [
+        "perf-share-01",
+        "{{me}}",
+        "{{partner}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-58 days'))",
+      "params": [
+        "perf-share-02",
+        "{{partner}}",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__shares (id, owner_id, viewer_id, created_at) VALUES (?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','-30 days'))",
+      "params": [
+        "perf-share-03",
+        "{{child}}",
+        "{{me}}"
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-001",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-1}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-002",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-2}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-003",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-3}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-004",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-4}}",
+        2,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-005",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-5}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-006",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-6}}",
+        2,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-007",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-8}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-008",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-9}}",
+        2,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-009",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-10}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-010",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-12}}",
+        3,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-011",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-13}}",
+        5,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-012",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-14}}",
+        1,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-013",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-15}}",
+        5,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-014",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-16}}",
+        1,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-015",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-18}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-016",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-19}}",
+        3,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-017",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-20}}",
+        5,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-018",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-21}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-019",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-22}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-020",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-23}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-021",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-24}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-022",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-25}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-023",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-26}}",
+        4,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-024",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-28}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-025",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-29}}",
+        2,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-026",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-30}}",
+        4,
+        1
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-027",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-31}}",
+        2,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-028",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-32}}",
+        3,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-029",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-33}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-030",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-35}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-031",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-36}}",
+        2,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-032",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-38}}",
+        5,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-033",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-39}}",
+        1,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-034",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-40}}",
+        5,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-035",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-41}}",
+        1,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-036",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-42}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-037",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-43}}",
+        5,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-038",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-44}}",
+        3,
+        1
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-039",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-45}}",
+        5,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-040",
+        "{{me}}",
+        "{{partner}}",
+        "{{date:-46}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-041",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:0}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-042",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-1}}",
+        2,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-043",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-2}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-044",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-3}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-045",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-5}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-046",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-6}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-047",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-7}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-048",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-8}}",
+        2,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-049",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-9}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-050",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-10}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-051",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-11}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-052",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-12}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-053",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-14}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-054",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-15}}",
+        2,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-055",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-16}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-056",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-17}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-057",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-18}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-058",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-19}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-059",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-20}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-060",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-21}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-061",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-23}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-062",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-24}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-063",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-25}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-064",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-26}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-065",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-27}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-066",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-28}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-067",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-29}}",
+        2,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-068",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-30}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-069",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-32}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-070",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-33}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-071",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-34}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-072",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-35}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-073",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-36}}",
+        2,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-074",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-37}}",
+        4,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-075",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-38}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-076",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-39}}",
+        3,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-077",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-41}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-078",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-42}}",
+        3,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-079",
+        "{{partner}}",
+        "{{me}}",
+        "{{date:-43}}",
+        2,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-080",
+        "{{child}}",
+        "{{me}}",
+        "{{date:0}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-081",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-1}}",
+        5,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-082",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-2}}",
+        2,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-083",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-4}}",
+        3,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-084",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-5}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-085",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-6}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-086",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-7}}",
+        5,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-087",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-9}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-088",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-10}}",
+        3,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-089",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-11}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-090",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-12}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-091",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-14}}",
+        2,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-092",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-15}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-093",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-16}}",
+        3,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-094",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-17}}",
+        4,
+        2
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-095",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-19}}",
+        5,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-096",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-20}}",
+        2,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-097",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-21}}",
+        4,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-098",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-22}}",
+        3,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-099",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-24}}",
+        5,
+        4
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-100",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-25}}",
+        5,
+        5
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-101",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-26}}",
+        2,
+        3
+      ]
+    },
+    {
+      "sql": "INSERT INTO app_mood__trend_shares (id, owner_id, viewer_id, entry_date, mood, energy) VALUES (?, ?, ?, ?, ?, ?)",
+      "params": [
+        "perf-trend-102",
+        "{{child}}",
+        "{{me}}",
+        "{{date:-27}}",
+        4,
+        4
+      ]
+    }
+  ]
+}
