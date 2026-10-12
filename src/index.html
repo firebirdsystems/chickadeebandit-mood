@@ -142,6 +142,9 @@
     .btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 
     .empty { color: var(--hub-text-muted, #6b7280); font-size: 0.88rem; padding: 24px 0; text-align: center; }
+    .load-error { margin: 12px 16px; padding: 10px 14px; border-radius: 10px; background: var(--hub-tint-danger, #fee2e2); color: var(--hub-tint-danger-fg, #b91c1c); font-size: 0.9rem; display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+    .load-error-retry { background: none; border: 1px solid currentColor; border-radius: 8px; padding: 5px 10px; font: inherit; font-weight: 600; color: inherit; cursor: pointer; flex-shrink: 0; }
+    body.load-failed .tab-panel { display: none; }
 
     .entry-row {
       display: flex;
@@ -302,12 +305,12 @@ const hubDay = () => new Date(`${hubToday()}T12:00:00`);
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sql, params }),
       });
-      const json = await res.json();
+      const json = await res.json().catch(() => null);
       // The hub reports a refused write as a JSON body with an `error` key
       // (403 row policy, 400 bad statement, 507 over quota). fetch() does not
       // reject on those, so without this throw every caller's rollback and
       // error toast below is unreachable code.
-      if (!res.ok || json.error) throw new Error(json.error || `Database request failed (${res.status})`);
+      if (!res.ok || !json || typeof json !== "object" || json.error) throw new Error(json?.error || `Database request failed (${res.status})`);
       return json;
     }
 
@@ -324,8 +327,8 @@ const hubDay = () => new Date(`${hubToday()}T12:00:00`);
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statements }),
       });
-      const json = await res.json();
-      if (!res.ok || json.error) throw new Error(json.error || `Database request failed (${res.status})`);
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json || typeof json !== "object" || json.error) throw new Error(json?.error || `Database request failed (${res.status})`);
       return json;
     }
 
@@ -391,10 +394,11 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
         memberMap = new Map(members.map(m => [m.id, m]));
         return;
       }
-      try {
-        const res = await fetch(`${CONTEXT}?keys=family.members`);
-        members = ((await res.json())["family.members"]) ?? [];
-      } catch { members = []; }
+      // A member list that could not be read is a failed load, not a household with nobody in it.
+      const res = await fetch(`${CONTEXT}?keys=family.members`);
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data || typeof data !== "object" || data.error || (Array.isArray(data.$errors) && data.$errors.includes("family.members"))) throw new Error("Couldn’t reach the hub. Try again.");
+      members = data["family.members"] ?? [];
       memberMap = new Map(members.map(m => [m.id, m]));
     }
 
@@ -706,6 +710,7 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
         delete document.getElementById("panel-today").dataset.editing;
       } catch (e) {
         if (btn) { btn.disabled = false; btn.textContent = existing ? "Save changes" : "Save check-in"; }
+        hubAlert("Your check-in could not be saved.", { description: e.message });
       }
     };
 
@@ -835,8 +840,14 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
           btn.addEventListener("click", () => window.selectSharedViewer(btn.dataset.id));
         });
 
-        const sharedEntries = await loadSharedEntries(sharedViewerId);
         const name = memberMap.get(sharedViewerId)?.name ?? "This member";
+        let sharedEntries;
+        try { sharedEntries = await loadSharedEntries(sharedViewerId); }
+        catch {
+          const body = document.getElementById("shared-trend-body");
+          if (body) body.innerHTML = `<div class="empty">Couldn’t load ${esc(name)}'s trends. Try again.</div>`;
+          return;
+        }
         renderTrendBody("shared-trend-body", sharedEntries, `${name}'s trends`, true);
       }
     }
@@ -963,8 +974,9 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
           sw.dataset.pending = "1";
           try {
             await setShare(id, turningOn);
-          } catch {
+          } catch (e) {
             sw.classList.toggle("on", !turningOn);
+            hubAlert("Sharing could not be changed.", { description: e.message });
           } finally {
             delete sw.dataset.pending;
           }
@@ -986,17 +998,41 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
 
     // ── Init ─────────────────────────────────────────────────────────────────
 
+    // A failed first load shows a banner under the tabs and hides the panels:
+    // an empty Today form or "No check-ins yet" would be a guess.
+    let loadFailed = false;
+    let swept = false;
+    async function firstLoad() {
+      try { await Promise.all([loadMembers(), loadEntries(), loadShares()]); loadFailed = false; }
+      catch { loadFailed = true; }
+      // Best-effort sweep of trend rows left behind by a revoke that raced a
+      // save on another device. Only against shares that were really read: it
+      // deletes the rows of every viewer missing from `shares`, and after a
+      // failed load that is all of them.
+      if (!loadFailed && !swept) { swept = true; reconcileTrendShares().catch(() => {}); }
+      document.body.classList.toggle("load-failed", loadFailed);
+      let banner = document.querySelector('[data-testid="load-error"]');
+      if (!loadFailed) { banner?.remove(); return; }
+      if (banner) return;
+      banner = document.createElement("div");
+      banner.className = "load-error";
+      banner.dataset.testid = "load-error";
+      banner.setAttribute("role", "alert");
+      banner.innerHTML = `<span>Couldn’t load your check-ins.</span> <button type="button" class="load-error-retry" data-testid="load-retry">Try again</button>`;
+      banner.querySelector("button").addEventListener("click", async () => {
+        await firstLoad();
+        if (!loadFailed) window.switchTab(activeTab);
+      });
+      document.querySelector(".tabs").after(banner);
+    }
+
     (async () => {
-      await Promise.all([loadMembers(), loadEntries(), loadShares()]);
+      await firstLoad();
       renderToday();
       // Boot marker: the tab buttons are static shell markup, so without this a
       // click can land before shares have loaded and the "Shared with me" card
       // never renders (renderTrends is not re-run when the data arrives).
       document.getElementById("panel-today")?.setAttribute("data-boot", "ready");
-      // Best-effort sweep of trend rows left behind by a revoke that raced a
-      // save on another device. Runs after the first paint: it repairs sharing
-      // state, it is not needed to draw anything.
-      reconcileTrendShares().catch(() => {});
     })();
   </script>
 </body>
