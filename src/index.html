@@ -509,9 +509,8 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
         const live = new Set(viewers);
         shares = shares.filter(s => s.owner_id !== ME.id || live.has(s.viewer_id));
       } catch (e) {
-        hubAlert("Your entry was saved, but the people you share trends with weren't updated.", {
-          description: e.message,
-        });
+        console.error("[mood] shared trends not updated", e);
+        hubAlert("Your entry was saved, but the people you share trends with weren't updated.");
       }
 
       sharedEntriesCache.delete(ME.id);
@@ -542,7 +541,8 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
             })));
           }
         } catch (e) {
-          hubAlert("Sharing is on, but past entries weren't all copied across.", { description: e.message });
+          console.error("[mood] back-fill failed", e);
+          hubAlert("Sharing is on, but past entries weren't all copied across.");
         }
       } else {
         // One transaction: revoking used to be two requests, and a failure
@@ -710,7 +710,8 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
         delete document.getElementById("panel-today").dataset.editing;
       } catch (e) {
         if (btn) { btn.disabled = false; btn.textContent = existing ? "Save changes" : "Save check-in"; }
-        hubAlert("Your check-in could not be saved.", { description: e.message });
+        console.error("[mood] check-in not saved", e);
+        hubAlert("Couldn’t save your check-in — try again.");
       }
     };
 
@@ -976,7 +977,8 @@ let searchQ = "";       // in-app search (see logic.js searchableFields)
             await setShare(id, turningOn);
           } catch (e) {
             sw.classList.toggle("on", !turningOn);
-            hubAlert("Sharing could not be changed.", { description: e.message });
+            console.error("[mood] sharing not changed", e);
+            hubAlert("Couldn’t change sharing — try again.");
           } finally {
             delete sw.dataset.pending;
           }
