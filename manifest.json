@@ -21,16 +21,18 @@
     "entries": {
       "kind": "owner_only",
       "member_column": "member_id",
-      "adults_bypass": false,
-      "retain_days": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" }
+      "adults_bypass": false
     },
     "shares": { "kind": "owner_only", "member_column": "owner_id", "adults_bypass": false },
     "trend_shares": {
       "kind": "party_scoped",
       "member_columns": ["owner_id", "viewer_id"],
-      "self_column": "owner_id",
-      "retain_days": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" }
+      "self_column": "owner_id"
     }
+  },
+  "retention": {
+    "entries": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" },
+    "trend_shares": { "default": 365, "timestamp_column": "entry_date", "override_key": "mood_history" }
   },
   "member_references": {
     "entries": { "column": "member_id", "on_removed": "delete" },
@@ -51,8 +53,5 @@
     "default_audience": "everyone",
     "requires_approval": false
   },
-  "nav": { "label": "Mood" },
-  "resource_limits": {
-    "max_db_bytes": 52428800
-  }
+  "nav": { "label": "Mood" }
 }
